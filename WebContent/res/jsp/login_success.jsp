@@ -9,6 +9,7 @@
 	<title>Login Success Page</title>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/res/css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/res/css/style2.css"/>
 </head>
 <body>
 <%
@@ -34,6 +35,7 @@ try {
 	e.printStackTrace();
 }
 img_loc="/files/"+img_loc;
+String thisad=(String)request.getSession(false).getAttribute("strtarget");//=request.getParameter("plus");
 %>
 <!--  <h3>Hi <%=userName %>, Login successful. Your Session ID=<%=sessionID %></h3>
 <br>
@@ -44,17 +46,30 @@ User=<%=user %>
   <a onclick="show_dropdown()"> <img src=<%=img_loc%> height="40" width="40"> <%=userName%> </a> 
 </div>
 
+<% if (thisad!=null && thisad.equals("ok")){%>
+
 <div id="myDropdown" class="dropdown-content">
     <a href="#" onclick="show_settings()">Profile Settings</a>
     <a href="#" onclick="show_reservations()">Reservations</a>
     <a href="#">My Ads</a>
-    <a href="#" onclick="make_ad()">Make new ad</a>
+    <a href="#" onclick="make_ad()" id="ad">Make new ad</a>
     <form action="${pageContext.request.contextPath}/LogoutServlet" method="post">
     <a href="#"><input type="submit" class="button" value="Logout" ></a>
 	</form>
 </div> 
+<%}
+else{%>
+<div id="myDropdown" class="dropdown-content">
+    <a href="#" onclick="show_settings()">Profile Settings</a>
+    <a href="#" onclick="show_reservations()">Reservations</a>
+    <form action="${pageContext.request.contextPath}/LogoutServlet" method="post">
+    <a href="#"><input type="submit" class="button" value="Logout" ></a>
+	</form>
+</div> 
+<% }%>
  <br>
  
+<a style="color: red;">${errormessage} </a>
 
 <div id="toChange">
 	<table class="search_table">
@@ -69,13 +84,22 @@ User=<%=user %>
 		<br>
 	<br>
 	<div class="center"><img src="${pageContext.request.contextPath}/res/img/logo.png" height="200" width="600"></div>
-	
 </div>
+
+
+<% if (((String)request.getParameter("plus"))==null || ((String)request.getParameter("plus")).equals("fail") ){ %>
+	<a> Nothing </a>	
+<% } else { %>
+	<%--<a> Nothing222 </a>--%>
+	<jsp:include page="_menu.jsp" ></jsp:include>
+<% } %>
+ 
 
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDp-buvGy-gXQey238T7oF5NOzw4I6Z6jY"></script>
 <script src="${pageContext.request.contextPath}/res/js/google_maps.js" type="text/javascript"> </script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="${pageContext.request.contextPath}/res/js/js_test.js" type="text/javascript"> </script>
+<script src="${pageContext.request.contextPath}/res/js/index.js" type="text/javascript"> </script>
 </body>
 </html>

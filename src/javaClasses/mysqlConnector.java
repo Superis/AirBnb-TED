@@ -5,9 +5,9 @@ import java.sql.*;
 public class mysqlConnector {
 
 	
-	String URL = "jdbc:mysql://localhost:3306/TED?autoReconnect=true&useSSL=true";
+	String URL = "jdbc:mysql://localhost:3306/newdb?autoReconnect=true&useSSL=true";
     String USERNAME = "root";
-    String PASSWORD = "1234";
+    String PASSWORD = "6666";
     Connection con = null;
 	
     public void establishConnection(){
@@ -156,6 +156,20 @@ public boolean searchForUser(String usrnm) throws SQLException{
         }
 	}
 	
+	public void ConfirmUser(String usrnm) throws SQLException{
+		if (con != null) {
+            java.sql.PreparedStatement statement = null;
+
+            statement = con.prepareStatement("UPDATE USER_ACCOUNT SET ROLE='H' WHERE USER_NAME=?");
+
+            statement.setString(1, usrnm);
+            statement.executeUpdate();
+
+
+        }
+		
+	}
+	
 	public ResultSet searchForReservations(String usrnm) throws SQLException{
 		
 		if (con != null) {
@@ -186,6 +200,22 @@ public boolean searchForUser(String usrnm) throws SQLException{
 		}
 		return null;
 	}
+	
+	public String FindRole(String usrnm) throws SQLException{
+		if (con != null) {
+	        PreparedStatement statement = null;
+
+	        statement = con.prepareStatement("SELECT ROLE FROM USER_ACCOUNT WHERE USER_NAME=?");
+	        statement.setString(1, usrnm);
+	        ResultSet rs = statement.executeQuery();
+	        if (rs.next()) {
+	        	String fin = rs.getString(1);
+	        	return fin;
+	        }
+		}
+		return null;
+	}
+	
 	
 	public void updateUserInfo(String usrnm, String psswd, String phone, String email,String pic) throws SQLException{
 		
@@ -234,7 +264,7 @@ public boolean searchForUser(String usrnm) throws SQLException{
             java.sql.PreparedStatement statement = null;
             ResultSet rs = null;
 
-            statement = con.prepareStatement("SELECT * FROM USER_ACCOUNT;");
+            statement = con.prepareStatement("SELECT * FROM USER_ACCOUNT ORDER BY ROLE;");
             rs = statement.executeQuery();
             return rs;
 

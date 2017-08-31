@@ -3,7 +3,7 @@
 
 <div>
 <input type="submit" class="buttonNW" value="Back to search" onclick="show_search()">
-<table>
+<table style="vertical-align:top">
  <tr>
  <td style="vertical-align:top">
  <table>
@@ -27,7 +27,7 @@
  <div  id = "map" style = "width:350px; height:300px;"></div></td>
  </tr>
  <tr><td>
- <table style="width:50%">
+ <table>
  	<tr>
  	<td style="vertical-align:top">Μέγιστος αριθμός ατόμων
  	<input type="text" class="textinput"></td>
@@ -38,33 +38,10 @@
  	</tr>
  </table>
  </td></tr>
- <tr><td>
- <table style="width:50%">
- 	<tr>
- 	<td style="vertical-align:top">Τύπος ενοικιαζόμενου χώρου
- 	<input type="text" class="textinput"></td>
- 	<td style="vertical-align:top">Αριθμός κρεβατιών
- 	<input type="text" class="textinput"></td>
- 	<td style="vertical-align:top">Αριθμός μπάνιων
- 	<input type="text" class="textinput"></td>
- 	</tr>
- </table>
- </td>
+ <tr>
+ <td></td> 
  <td style="vertical-align:top">Επιλέξτε εικόνες:<input class="fileContainer" type="file" name="img" multiple></td>
  </tr>
- <tr><td>
- <table style="width:50%">
- 	<tr>
- 	<td style="vertical-align:top">Αριθμός υπνοδωματίων
- 	<input type="text" class="textinput"></td>
- 	<td style="vertical-align:top">Αριθμός καθιστικών
- 	<input type="text" class="textinput"></td>
- 	<td style="vertical-align:top">Εμβαδό χώρου
- 	<input type="text" class="textinput"></td>
- 	</tr>
- </table>
- </td></tr>
- 
 
 </table>
 </div>

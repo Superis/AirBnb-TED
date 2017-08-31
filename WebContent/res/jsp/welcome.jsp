@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -60,8 +60,8 @@ if(user != null) response.sendRedirect("./res/jsp/login_success.jsp");
  <input type="text" name="phone">
  <table>
  <tr>
- <td>Choose your roles: Tenant <input type="checkbox" name="tenant"></td>
- <td> Host <input type="checkbox" name="host"></td>
+ <td>Choose your roles: Tenant <input type="radio" name="host/tenant" id="tenant" value="Y"></td>
+ <td> Host <input type="radio" name="host/tenant" id="host" value="N"></td>
  </tr>
  </table>
   
