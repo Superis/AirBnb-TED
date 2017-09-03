@@ -5,14 +5,13 @@ alert("HELLO WORLD");
 function openModal(id) {
 	
 	var xhttp;    
-
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("modalContent").innerHTML = this.responseText;
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/ad.jsp?id="+id, true);
+	xhttp.open("GET", "/TED/AdServlet?id="+id, true);
 	xhttp.send();
 	
 	document.getElementById('myModal').style.display = "block";
@@ -71,12 +70,10 @@ function show_boxes(count) {
 	}
 	//alert((!start.value) || (!finish.value));
 	if (start.value && finish.value){
-		alert("hello");
 		var mdy=start.value.split('/');
 		var from=mdy[2].concat("-",mdy[0],"-",mdy[1]);
 		var mdy2=finish.value.split('/');
 		var to=mdy2[2].concat("-",mdy2[0],"-",mdy2[1]);
-		alert(mdy);
 		xhttp.open("GET", "/TED/DbServlet?str="+place.value+"&count="+count+"&from="+from+"&to="+to+"&diff="+diff, true);
 	}
 	else{

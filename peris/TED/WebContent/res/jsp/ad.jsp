@@ -11,34 +11,26 @@
 <body>
 
 <div class="adContent">
-<%@ page import="javaClasses.mysqlConnector" %>
+<%@ page import="javaClasses.*" %>
 <%@ page import="java.sql.*" %>
-<%
-	String id = request.getParameter("id");
-	mysqlConnector Connector = new mysqlConnector();
-	Connector.establishConnection();
-	ResultSet rs=null;
-	try{
-		rs = Connector.searchForAds("ID",id);
-	}catch(SQLException e){
-		e.printStackTrace();
+<%@ page import="java.util.*" %>
+<%	
+	Ad item=null;
+	if (request.getAttribute("results")==null){
+		%> PROBLEM <%
 	}
-	ResultSetMetaData rsmd = rs.getMetaData();
-	int columnsNumber = rsmd.getColumnCount();
-	String[] strs = new String[columnsNumber];
-	if(rs.next()){
-		 for (int i = 1; i <= columnsNumber; i++) {
-		         String columnValue = rs.getString(i);
-		         strs[i-1] = columnValue;	
-		 }
+	else{
+		List<Ad> adList = (List<Ad>) request.getAttribute("results");
+		item=adList.get(0);
 	}
-		 
+	
+	if (item!=null){	 
 %>
 
 
 <div class="green">
 	<h3>
- 		<center><%=strs[1]%></center>
+ 		<center><%=item.name%></center>
  	</h3>
 </div>
 <br>
@@ -47,9 +39,9 @@
 </h4>
 <br>
 <br>
-  <%= strs[2] %>
+  <%= item.desc %>
 <br>
-<img src=<%=strs[6]%> height="300" width="500">
+<img src=<%=item.pic%> height="300" width="500">
 <br>
 
 <%
@@ -71,8 +63,9 @@ if(request.getSession(false) != null)
 <%	}
 }%>
 
-<input style="display: none"type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=id%>')">
+<input style="display: none"type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
 <div id="toChangeAd"></div>
+<% } %>
 <br>
 </div>
 </body>

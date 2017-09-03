@@ -34,7 +34,7 @@ public class DbServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		mysqlConnector Connector = new mysqlConnector();
+		 mysqlConnector Connector = new mysqlConnector();
 		 Connector.establishConnection();
 		 String myinfo = request.getParameter("count");
 		 String cityname=request.getParameter("str");

@@ -170,7 +170,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
             statement.setString(2, from);
             statement.setString(3, to);
             statement.setString(4, diff);
-
+            statement.setFetchSize(150);
             rs = statement.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
