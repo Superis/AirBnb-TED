@@ -1,22 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
    
-<%@ page import="javaClasses.mysqlConnector" %>
 <%@ page import="javaClasses.Admin" %>
 <%@ page import="java.sql.*" %>
 
 
-<%mysqlConnector Connector = new mysqlConnector();
+<%
+boolean answer = (boolean) request.getAttribute("answer");
 
-Connector.establishConnection();
-boolean answer = false;
 
-try {
-	System.out.println(request.getParameter("q"));
-	answer = Connector.searchForUser(request.getParameter("q"));
-} catch (SQLException e) {
-	e.printStackTrace();
-}
 if(Admin.check(request.getParameter("q"))) answer = true;
 if(answer == true && request.getParameter("func").equals("register")){
 	System.out.println("Username in use");
@@ -38,5 +30,4 @@ else {
 	response.getWriter().write(res);
 }
 
-	Connector.destroyConnection();
 %>

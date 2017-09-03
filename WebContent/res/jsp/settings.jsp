@@ -15,10 +15,8 @@
 <%@ page import="javaClasses.mysqlConnector" %>
 <%@ page import="java.sql.*" %>
 <%
-mysqlConnector Connector = new mysqlConnector();
-Connector.establishConnection();
-ResultSet rs = Connector.userInfo((String) request.getSession(false).getAttribute("user"));
 
+ResultSet rs = (ResultSet)request.getAttribute("results");
 ResultSetMetaData rsmd = rs.getMetaData();
 int columnsNumber = rsmd.getColumnCount();
 String[] strs = new String[columnsNumber];
@@ -28,8 +26,6 @@ while(rs.next()){
 	         strs[i-1] = columnValue;	 
 	 }
 }
-
-Connector.destroyConnection();
 
 for(String str: strs){
 	System.out.print(str+" ");

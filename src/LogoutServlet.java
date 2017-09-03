@@ -54,7 +54,7 @@ public class LogoutServlet extends HttpServlet {
     		session.invalidate();
     		session = null;
     	}
-	    	response.sendRedirect("./res/jsp/welcome.jsp");
+	    	response.sendRedirect("/TED/Servlet");
 	    	return;
     }
 }

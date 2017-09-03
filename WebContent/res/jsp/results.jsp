@@ -36,8 +36,9 @@
  <br>
 <div class="ads">
 
-<%@ page import="javaClasses.mysqlConnector" %>
+<%@ page import="javaClasses.*" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
 <%@ page import="java.text.NumberFormat" %>
  <% 
  
@@ -47,13 +48,13 @@
  String myinfo = request.getParameter("count");
  String cityname=request.getParameter("str");
  
- ResultSet rs = (ResultSet)request.getAttribute("results");
+ /*ResultSet rs = (ResultSet)request.getAttribute("results");
  ResultSetMetaData rsmd = rs.getMetaData();
  int columnsNumber = rsmd.getColumnCount();
- String[] strs = new String[columnsNumber];
+ String[] strs = new String[columnsNumber];*/
+ List<Ad> adList = (List<Ad>) request.getAttribute("results");
  
- 
- while(rs.next()){
+ for(Ad temp: adList){
 	 total++;
  }
  if (myinfo==null){
@@ -64,27 +65,22 @@
  }
  
  int count=0;
- rs.beforeFirst();
- while(rs.next()){
+ for(Ad temp: adList){
 	 count++;
 	 if (count<=j)
 		 continue;
 	 if (count>j+10)
 		 break;
-	 for (int i = 1; i <= columnsNumber; i++) {
-	         String columnValue = rs.getString(i);
-	         strs[i-1] = columnValue;	 
-	 }
 	 /*StringBuilder sb = new StringBuilder(strs[7]);
 	 sb.deleteCharAt(0);
 	 String myres=sb.toString();
 	 float num = Float.parseFloat(myres);*/
  %>
-<div onclick="openModal('<%=strs[0]%>')" class="box">
+<div onclick="openModal('<%=temp.id%>')" class="box">
  <div class="Content">
 	<br>
-	<img src=<%=strs[6]%> height="100" width="100">
-	<%=strs[0] %>,<%=strs[1]%>,<%=strs[3] %>,<%=strs[4] %>,<%=strs[5] %>, <%=strs[7] %>,<%=j %>
+	<img src=<%=temp.pic	%> height="100" width="100">
+	<%=temp.id%>,<%=temp.name%>,<%=temp.city %>,<%=temp.state %>,<%=temp.country %>, <%=temp.price %>,<%=j %>
 	<!-- <input type="button" class="button" onclick="clicked()" value="More info"></input>-->
  </div>
 </div> 
@@ -98,7 +94,7 @@
  <div id="velakia" class="center">
   <div class="pagination">
     <a href="#">&laquo;</a>
-    <%for(int i=0;i<((total/10)+1);i++) { //anti gia 8a einai to plh9os twn aggeliwn / 10 mallon
+    <%for(int i=0;i<((total/10)+1);i++) {
     %>
     
     <a onclick="openNewTen('<%=10*i%>','<%= cityname %>')" > <%=(i+1)%> </a> 

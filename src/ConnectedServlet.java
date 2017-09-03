@@ -48,7 +48,7 @@ public class ConnectedServlet extends HttpServlet {
 			fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
 		    InputStream fileContent = filePart.getInputStream();
 		    //String loc=.getServletContext().getRealPath("/WebContent/res/img");
-		    File folder=new File("/home/peris/Pictures/TEDImages");
+		    File folder=new File("/home/paris/Pictures/TEDImages");
 		    File file=new File(folder,fileName);
 		    file.setReadable(true, false);
 		    file.setExecutable(true, false);
@@ -69,11 +69,12 @@ public class ConnectedServlet extends HttpServlet {
 			connector.destroyConnection();
 			}
 			
-			response.sendRedirect("./res/jsp/login_success.jsp");
+			//request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
+			request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
 		}
-		else response.sendRedirect("./res/jsp/login_success.jsp");
+		else request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

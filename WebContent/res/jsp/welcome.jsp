@@ -1,4 +1,4 @@
- <%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,7 +17,7 @@
 <body>
 <%
 String user = (String) request.getSession(false).getAttribute("user");
-if(user != null) response.sendRedirect("./res/jsp/login_success.jsp");
+if(user != null) response.sendRedirect("/TED/ConnectedServlet");
 %>
  <div class="topnav">
   <a href="#" id="registerform">Register</a> 
@@ -60,8 +60,8 @@ if(user != null) response.sendRedirect("./res/jsp/login_success.jsp");
  <input type="text" name="phone">
  <table>
  <tr>
- <td>Choose your roles: Tenant <input type="radio" name="host/tenant" id="tenant" value="Y"></td>
- <td> Host <input type="radio" name="host/tenant" id="host" value="N"></td>
+ <td>Choose your roles: Tenant <input type="checkbox" name="tenant"></td>
+ <td> Host <input type="checkbox" name="host"></td>
  </tr>
  </table>
   

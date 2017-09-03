@@ -49,16 +49,9 @@ public class Servlet extends HttpServlet {
 			else{
 				mysqlConnector myConnector = new mysqlConnector();
 				myConnector.establishConnection();
-
-				String infohost;
-							System.out.println(request.getParameter("host/tenant"));
-							if (request.getParameter("host/tenant")!=null && request.getParameter("host/tenant").equals("N"))
-								infohost="A";
-							else
-								infohost="T";
 				try {
 					myConnector.insertUserToDB(request.getParameter("ruser"),request.getParameter("rpassword"),request.getParameter("email")
-					,request.getParameter("phone"),infohost,"default-user.png");
+					,request.getParameter("phone"),"h","default-user.png");
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -87,7 +80,7 @@ public class Servlet extends HttpServlet {
 				userNameCookie.setMaxAge(-1);
 				
 				response.addCookie(userNameCookie);
-				response.sendRedirect("./res/jsp/admin_page.jsp");
+				request.getRequestDispatcher("/res/jsp/admin_page.jsp").forward(request, response);
 				return;
 			}
 			System.out.println(user+" "+psswd);
@@ -118,29 +111,7 @@ public class Servlet extends HttpServlet {
 				userNameCookie.setMaxAge(-1);
 				
 				response.addCookie(userNameCookie);
-				String somerole=null;
-				mysqlConnector nConnector = new mysqlConnector();
-				nConnector.establishConnection();
-				try {
-					somerole = nConnector.FindRole(user);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println(somerole);
-				String strtarget;
-				if (somerole.equals("H")) {
-					strtarget="ok";
-					System.out.println("check");
-					//request.setAttribute("rolestr",strtarget);
-				}
-				else
-					strtarget="fail";
-				session.setAttribute("strtarget", strtarget);
-				//request.setAttribute("plus",strtarget);
-				//RequestDispatcher rd = getServletContext().getRequestDispatcher("/res/jsp/login_success.jsp");
-				//rd.forward(request, response);
-				response.sendRedirect("./res/jsp/login_success.jsp");
+				response.sendRedirect("/TED/ConnectedServlet");
 				return;
 				//request.getRequestDispatcher("/res/login_success.jsp").forward(request, response);;
 				

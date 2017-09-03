@@ -49,12 +49,7 @@
 <td><label>Role: </label></td>
 <td><%=strs[5] %></td>
 <td>
-<% if(strs[5].equals("A")){ %>
-<form action="${pageContext.request.contextPath}/Confirm?str=<%=strs[0]%>" method="post">
-<input type="submit" class="buttonNW" value="Confirm">
-</form>
-</td>
-<% } %>
+<input type="submit" class="buttonNW" value="Confirm"></td>
 </tr>
 </table>
     

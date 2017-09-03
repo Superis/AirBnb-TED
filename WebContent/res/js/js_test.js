@@ -10,7 +10,6 @@ function openModal(id) {
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("modalContent").innerHTML = this.responseText;
-			mkbtn_func();
 		}
 	};
 	xhttp.open("GET", "/TED/res/jsp/ad.jsp?id="+id, true);
@@ -63,10 +62,28 @@ function show_boxes(count) {
 	xhttp.send();
 }
 
+function show_ads(count){
+	var xhttp;    
+	
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("toChange").innerHTML = this.responseText;
+		}
+	};
+	xhttp.open("GET", "/TED/DbServlet?show_ads=show&count="+count, true);
+	xhttp.send();
+
+	var x = document.getElementById('myDropdown');
+    if (x.style.display !== 'none') {
+        x.style.display = 'none';
+    }
+}
+
 function openNewTen(count,str) {
 	//alert("I'm trying to do TED!!");
 	//var per=document.getElementById("newten");
-	var xhttp;    
+	var xhttp;  
 	
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -80,6 +97,23 @@ function openNewTen(count,str) {
 	
 }
 
+function openNewTenAds(count) {
+	//alert("I'm trying to do TED!!");
+	//var per=document.getElementById("newten");
+	var xhttp;  
+	
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("toChange").innerHTML = this.responseText;
+		}
+	};
+	//xhttp.open("GET", "/TED/res/jsp/results.jsp?count="+count+"&str="+str, true);
+	xhttp.open("GET", "/TED/DbServlet?show_ads=show&count="+count, true);
+	xhttp.send();
+	
+}
+
 function show_settings() {
 	var xhttp;    
 
@@ -89,7 +123,7 @@ function show_settings() {
 			document.getElementById("toChange").innerHTML = this.responseText;
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/settings.jsp", true);
+	xhttp.open("GET", "/TED/DbServlet?settings=show", true);
 	xhttp.send();
 	
 	var x = document.getElementById('myDropdown');
@@ -156,7 +190,7 @@ function search_for_user_register(str){
 			else register_available();
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/check_for_user.jsp?q="+str+"&func=register", true);
+	xhttp.open("GET", "/TED/DbServlet?searchForUser=show&q="+str+"&func=register", true);
 	xhttp.send();
 }
 
@@ -173,7 +207,7 @@ function search_for_user_login(str){
 			else login_available();
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/check_for_user.jsp?q="+str+"&func=login", true);
+	xhttp.open("GET", "/TED/DbServlet?searchForUser=show&q="+str+"&func=login", true);
 	xhttp.send();
 }
 
@@ -235,17 +269,6 @@ function show_reservations(){
     }
 }
 
-function mkbtn_func(){
-	
-	var btn = document.getElementById("mkbtn");
-	console.log(document.getElementById("case").getAttribute('value'));
-	if(document.getElementById("case").getAttribute('value') == 'yes') btn.style.display = 'block';
-	else btn.style.display = 'none';
-	
-	
-}
-
-
 
 function show_profile(name){
 	
@@ -269,7 +292,8 @@ function show_path(val){
 	document.getElementById("path").innerHTML = val;
 	document.getElementById("path").style.display = 'block';
 }
-	
+
+
 function make_ad(){
 	var xhttp;    
 	
@@ -279,7 +303,7 @@ function make_ad(){
 			document.getElementById("toChange").innerHTML = this.responseText;
 			
 			//load another js file
-			$.getScript('../js/google_maps.js', function()
+			$.getScript('/TED/res/js/google_maps.js', function()
 			{
 			    // script is now loaded and executed.
 			    // put your dependent JS here.
@@ -296,7 +320,70 @@ function make_ad(){
     }
 }
 
+function ad_alert(){
+	alert("Ad has been registered successfully!");
+}
+	
+function send_message(fromuser,id){
+	var xhttp;    
+	
+	content = document.getElementById("content").value;
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+		}
+	};
+	xhttp.open("GET", "/TED/DbServlet?send_message=send&from="+fromuser+"&id="+id+"&content="+content, true);
+	xhttp.send();
+	
+}
+
+function show_messages(user){
+	var xhttp;    
+	
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("toChange").innerHTML = this.responseText;
+		}
+	};
+	xhttp.open("GET", "/TED/DbServlet?show_messages=show&user="+user, true);
+	xhttp.send();
+	
+	var x = document.getElementById('myDropdown');
+    if (x.style.display !== 'none') {
+        x.style.display = 'none';
+    }
+}
+
+function reply(str){
+	
+	var x = document.getElementById(str);
+	
+	if(x.style.display === 'none') x.style.display = 'block'
+	else x.style.display = 'none';
+}
+
+function send_reply(from,content,to,id){
+	var xhttp;    
+	
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById(id).style.display = 'none'
+			alert("Your message has been sent!")
+		}
+	};
+	xhttp.open("GET", "/TED/DbServlet?send_reply=show" +
+			"&from="+from+"&content="+document.getElementById(content).value+"&to="+to, true);
+	xhttp.send();
 	
 	
-	
+}
+
+
+
+
+
+
 
