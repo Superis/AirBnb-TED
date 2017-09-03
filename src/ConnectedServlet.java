@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import javaClasses.User;
 import javaClasses.mysqlConnector;
 
 /**
@@ -38,6 +40,23 @@ public class ConnectedServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			   
+		if(request.getParameter("admin") != null){
+			mysqlConnector Connector = new mysqlConnector();
+			Connector.establishConnection();
+			List<User> usrList = null;
+			try {
+				usrList = Connector.allUsers();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally{
+				Connector.destroyConnection();
+			}
+			request.setAttribute("users",usrList);
+			request.getRequestDispatcher("/res/jsp/admin_page.jsp").forward(request, response);
+		}
 		if(request.getParameter("saveChanges") != null){
 			System.out.println("Changes have been saved!");
 			String fileName;

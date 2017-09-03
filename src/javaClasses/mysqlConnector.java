@@ -109,7 +109,7 @@ public boolean searchForUser(String usrnm) throws SQLException{
         return answer;
 	}
 	
-	public ResultSet userInfo(String usrnm) throws SQLException{
+	public User userInfo(String usrnm) throws SQLException{
 		
 		if (con != null) {
             java.sql.PreparedStatement statement = null;
@@ -119,7 +119,19 @@ public boolean searchForUser(String usrnm) throws SQLException{
             statement.setString(1, usrnm);
 
             rs = statement.executeQuery();
-            return rs;
+            
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            String[] strs = new String[columnsNumber];
+            User user = null;
+            while(rs.next()){
+            	 for (int i = 1; i <= columnsNumber; i++) {
+            	         String columnValue = rs.getString(i);
+            	         strs[i-1] = columnValue;	 
+            	 }
+            	 user = new User(strs[0],strs[2],strs[3],strs[4],strs[5],strs[6]);
+            }
+            return user;
 		}
 		
 		return null;
@@ -356,7 +368,7 @@ public boolean searchForUser(String usrnm) throws SQLException{
  
     }
 	
-	public ResultSet allUsers() throws SQLException{
+	public List<User> allUsers() throws SQLException{
 		
 		if (con != null) {
             java.sql.PreparedStatement statement = null;
@@ -364,24 +376,22 @@ public boolean searchForUser(String usrnm) throws SQLException{
 
             statement = con.prepareStatement("SELECT * FROM USER_ACCOUNT;");
             rs = statement.executeQuery();
-            return rs;
-
-
-        }
-		
-		return null;
-	}
-	
-	public ResultSet User(String name) throws SQLException{
-		
-		if (con != null) {
-            java.sql.PreparedStatement statement = null;
-            ResultSet rs = null;
-
-            statement = con.prepareStatement("SELECT * FROM USER_ACCOUNT WHERE USER_NAME=?;");
-            statement.setString(1, name);
-            rs = statement.executeQuery();
-            return rs;
+            
+            ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			String[] strs = new String[columnsNumber];
+			List<User> usrList = new ArrayList<User>(); 
+        
+			while(rs.next()){
+				for (int i = 1; i <= columnsNumber; i++) {
+					String columnValue = rs.getString(i);
+					strs[i-1] = columnValue;	 
+				}
+				usrList.add(new User(strs[0],strs[2],strs[3],strs[4],strs[5],strs[6]));
+			}
+        
+            
+            return usrList;
 
 
         }

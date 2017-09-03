@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import javaClasses.Ad;
 import javaClasses.Message;
+import javaClasses.User;
 import javaClasses.mysqlConnector;
 
 /**
@@ -39,28 +40,39 @@ public class DbServlet extends HttpServlet {
 		 Connector.establishConnection();
 		 
 		 if(request.getParameter("settings") != null){
-			 
-			 ResultSet rs = null;
-			 
+			 			 
 			 try {
-				rs = Connector.userInfo((String) request.getSession(false).getAttribute("user"));
+				User user = Connector.userInfo((String) request.getSession(false).getAttribute("user"));
+				request.setAttribute("user", user);
+				request.getRequestDispatcher("/res/jsp/settings.jsp").forward(request, response);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			 finally{
-				// Connector.destroyConnection();
+				 Connector.destroyConnection();
 			 }
-			request.setAttribute("results", rs);
-			request.getRequestDispatcher("/res/jsp/settings.jsp").forward(request, response);
-			return;
 		 }
 		 else if(request.getParameter("searchForUser") != null){
 			 
-			 boolean answer = false;
-			 
+ 
 			try {
+				boolean answer = false;
 				answer = Connector.searchForUser(request.getParameter("q"));
+				request.setAttribute("answer", answer);
+				request.getRequestDispatcher("/res/jsp/check_for_user.jsp").forward(request, response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally{
+				Connector.destroyConnection();
+			}	
+		 }
+		 else if(request.getParameter("show_profile") != null){
+			 User user = null;
+			 try {
+				user = Connector.userInfo(request.getParameter("name"));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -68,9 +80,9 @@ public class DbServlet extends HttpServlet {
 			finally{
 				Connector.destroyConnection();
 			}
-			
-			request.setAttribute("answer", answer);
-			request.getRequestDispatcher("/res/jsp/check_for_user.jsp").forward(request, response);
+			 request.setAttribute("user", user);
+			 request.getRequestDispatcher("/res/jsp/user_profile.jsp").forward(request, response);
+			 
 		 }
 		 else if(request.getParameter("submitAd") != null){
 			 String access = request.getParameter("access");

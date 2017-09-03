@@ -12,24 +12,13 @@
 <br>
 <br>
 
-<%@ page import="javaClasses.mysqlConnector" %>
+<%@ page import="javaClasses.*" %>
 <%@ page import="java.sql.*" %>
 <%
 
-ResultSet rs = (ResultSet)request.getAttribute("results");
-ResultSetMetaData rsmd = rs.getMetaData();
-int columnsNumber = rsmd.getColumnCount();
-String[] strs = new String[columnsNumber];
-while(rs.next()){
-	 for (int i = 1; i <= columnsNumber; i++) {
-	         String columnValue = rs.getString(i);
-	         strs[i-1] = columnValue;	 
-	 }
-}
-
-for(String str: strs){
-	System.out.print(str+" ");
-}
+User user = (User)request.getAttribute("user");
+String[] strs = new String[6];
+user.getAll(strs);
 %>
 
 
@@ -43,7 +32,7 @@ for(String str: strs){
 	<td><label>Profile picture: </label></td>
 	</tr>
 <tr>
-	<td><img src=<%= "/files/"+strs[6] %> height=200 width=200></td>
+	<td><img src=<%= "/files/"+strs[5] %> height=200 width=200></td>
 	<td>Please select a JPEG (.jpg) file to be sent:</td>
 	<td><label class="fileContainer" >Choose image...<input type="file" name="file" onchange="show_path(this.value)"></label>
 	<font id="path" color="green" style="display: none;">Image has been selected</font></td>
@@ -63,12 +52,12 @@ for(String str: strs){
 </tr>
 <tr>
 <td><label> Email: </label></td>
-<td><%=strs[3]%></td>
+<td><%=strs[2]%></td>
 <td><input type="text" name="email" class="textinput" placeholder="new email"></td>
 </tr>
 <tr>
 <td><label>Phone number: </label></td>
-<td><%=strs[4]%></td>
+<td><%=strs[3]%></td>
 <td><input type="text" name="phone" class="textinput" placeholder="new phone number"></td>
 </tr>
 <tr>

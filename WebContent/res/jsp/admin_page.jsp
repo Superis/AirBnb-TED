@@ -19,23 +19,18 @@ Hello Admin!
  
 <div class="w3-container">
   <ul class="w3-ul w3-card-4">
-  <%@ page import="javaClasses.mysqlConnector" %>
+  <%@ page import="javaClasses.*" %>
   <%@ page import="java.sql.*" %>
+  <%@ page import="java.util.List" %>
   <%
-  mysqlConnector Connector = new mysqlConnector();
-  Connector.establishConnection();
-  ResultSet rs = Connector.allUsers();
+  List<User> usrList = (List<User>)request.getAttribute("users");
+
+  String[] strs = new String[6];
   
-  ResultSetMetaData rsmd = rs.getMetaData();
-  int columnsNumber = rsmd.getColumnCount();
-  String[] strs = new String[columnsNumber];
-  
-  while(rs.next()){
- 	 for (int i = 1; i <= columnsNumber; i++) {
- 	         String columnValue = rs.getString(i);
- 	         strs[i-1] = columnValue;	 
- 	 }
- 	  String img_loc="/files/"+strs[6];
+  if(usrList != null){
+  for(User temp: usrList){
+ 	  temp.getAll(strs);
+ 	  String img_loc="/files/"+strs[5];
   %>
     <li class="w3-bar">
       <span onclick="show_profile('<%=strs[0] %>')" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">></span>
@@ -47,6 +42,7 @@ Hello Admin!
 
     
     <%}
+  }
 
 %>
 

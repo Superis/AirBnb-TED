@@ -17,7 +17,8 @@
 <body>
 <%
 String user = (String) request.getSession(false).getAttribute("user");
-if(user != null) response.sendRedirect("/TED/ConnectedServlet");
+if(user != null && user.equals("admin")) response.sendRedirect("/TED/ConnectedServlet?admin=yes");
+else if(user != null) response.sendRedirect("/TED/ConnectedServlet");
 %>
  <div class="topnav">
   <a href="#" id="registerform">Register</a> 

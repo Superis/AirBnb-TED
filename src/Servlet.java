@@ -3,6 +3,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import javaClasses.Admin;
-import javaClasses.mysqlConnector;
+import javaClasses.*;
 
 /**
  * Servlet implementation class Servlet
@@ -80,7 +81,8 @@ public class Servlet extends HttpServlet {
 				userNameCookie.setMaxAge(-1);
 				
 				response.addCookie(userNameCookie);
-				request.getRequestDispatcher("/res/jsp/admin_page.jsp").forward(request, response);
+				response.sendRedirect("/TED/ConnectedServlet?admin=yes");
+				//request.getRequestDispatcher("/res/jsp/admin_page.jsp").forward(request, response);
 				return;
 			}
 			System.out.println(user+" "+psswd);

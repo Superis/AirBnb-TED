@@ -280,7 +280,7 @@ function show_profile(name){
 			document.getElementById("modalContent").innerHTML = this.responseText;
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/user_profile.jsp?name="+name, true);
+	xhttp.open("GET", "/TED/DbServlet?show_profile=show&name="+name, true);
 	xhttp.send();
 	
 	document.getElementById('myModal').style.display = "block";
