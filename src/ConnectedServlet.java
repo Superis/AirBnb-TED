@@ -67,7 +67,7 @@ public class ConnectedServlet extends HttpServlet {
 			fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
 		    InputStream fileContent = filePart.getInputStream();
 		    //String loc=.getServletContext().getRealPath("/WebContent/res/img");
-		    File folder=new File("/home/paris/Pictures/TEDImages");
+		    File folder=new File("/home/peris/Pictures/TEDImages");
 		    File file=new File(folder,fileName);
 		    file.setReadable(true, false);
 		    file.setExecutable(true, false);

@@ -7,9 +7,9 @@ import java.util.List;
 public class mysqlConnector {
 
 	
-	String URL = "jdbc:mysql://localhost:3306/TED?autoReconnect=true&useSSL=true";
+	String URL = "jdbc:mysql://localhost:3306/newdb?autoReconnect=true&useSSL=true";
     String USERNAME = "root";
-    String PASSWORD = "1234";
+    String PASSWORD = "6666";
     Connection con = null;
 	
     public void establishConnection(){
