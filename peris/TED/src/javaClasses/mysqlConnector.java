@@ -165,11 +165,11 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
             java.sql.PreparedStatement statement = null;
             ResultSet rs = null;
 
-            statement = con.prepareStatement("SELECT * FROM ROOM WHERE CITY=? AND ID IN(SELECT distinct(listing_id) FROM calendar WHERE available='t' AND date>=? AND date<? GROUP BY listing_id HAVING count(date)=?) ORDER BY length(PRICE),PRICE");
-            statement.setString(1, res);
-            statement.setString(2, from);
-            statement.setString(3, to);
-            statement.setString(4, diff);
+            statement = con.prepareStatement("SELECT * FROM ROOM INNER JOIN(SELECT distinct(listing_id) FROM calendar WHERE available='t' AND date>=? AND date<? GROUP BY listing_id HAVING count(date)=?) WW ON ID=WW.listing_id AND CITY=? ORDER BY length(PRICE),PRICE");
+            statement.setString(4, res);
+            statement.setString(1, from);
+            statement.setString(2, to);
+            statement.setString(3, diff);
             statement.setFetchSize(150);
             rs = statement.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -207,6 +207,19 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
 
 
         }
+	}
+	
+	public void holdRoom(String id,String from,String to) throws SQLException {
+		if (con != null) {
+            java.sql.PreparedStatement statement = null;
+
+            statement = con.prepareStatement("UPDATE calendar SET available='f' WHERE listing_id=? AND date>? AND date<=?");
+            
+            statement.setString(1,id);
+            statement.setString(2,from);
+            statement.setString(3,to);
+            statement.executeUpdate();
+		}
 	}
 	
 	public ResultSet searchForReservations(String usrnm) throws SQLException{

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 import javaClasses.Ad;
@@ -67,6 +68,13 @@ public class DbServlet extends HttpServlet {
 		request.setAttribute("from", from);
 		request.setAttribute("to",to);
 		request.setAttribute("diff",diff);
+		HttpSession session = request.getSession();
+		if (session.getAttribute("from")!=null && session.getAttribute("to")!=null) {
+			session.removeAttribute("from");
+			session.removeAttribute("to");
+		}
+		session.setAttribute("from",from);
+		session.setAttribute("to",to);
 		if (myinfo!=null && cityname!=null)
 			request.getRequestDispatcher("/res/jsp/results.jsp?str="+cityname+"&count="+myinfo).forward(request, response);
 		//response.getWriter().append("Served at: ").append(request.getContextPath());

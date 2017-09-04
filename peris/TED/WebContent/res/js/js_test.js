@@ -233,7 +233,7 @@ function make_reservation(user,id){
 			alert("Resrvation has been comfirmed");
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/make_reservation.jsp?user="+user+"&id="+id, true);
+	xhttp.open("GET", "/TED/ReservationServlet?user="+user+"&id="+id, true);
 	xhttp.send();
 }
 

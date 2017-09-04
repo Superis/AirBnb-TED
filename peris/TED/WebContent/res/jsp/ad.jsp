@@ -45,6 +45,7 @@
 <br>
 
 <%
+
 String user = "none";
 if(request.getSession(false) != null)
 {
@@ -52,20 +53,22 @@ if(request.getSession(false) != null)
 	user = (String)request.getSession(false).getAttribute("user");
 	if(user == null)
 	{
+		System.out.print("problem");
 %>
-		<div hidden id="case" value="no"></div>
+
 <%
 
 	}
 	else {
+		System.out.print("not that");
 %>
-	<div hidden id="case" value="yes"></div>
-<%	}
-}%>
-
-<input style="display: none"type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
+HELLO
+<input type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
 <div id="toChangeAd"></div>
-<% } %>
+<%  }
+  }
+}
+%>
 <br>
 </div>
 </body>
