@@ -12,14 +12,16 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <%
 int i=0;
 for(Message temp: messages){
-	String str = "reply"+i;
+	String rid = "reply"+i;
+	String mid = "msg"+i;
 	String content = "content"+i;
 	%>
 	<tr>
-	<td><textarea readonly onclick="reply('<%=str%>')" class="textinput" ><%=temp.from%>: <%=temp.content %></textarea></td>
-	<td hidden id="<%=str%>"><textarea class="textinput" id="<%=content %>" placeholder="Click again to close" rows="3" cols="50"></textarea>
-	<input type="submit" class="button" onclick="send_reply('<%=temp.to%>','<%=content %>','<%=temp.from%>','<%=str %>')" value="Reply"></td>
-	<td><input type="submit" class="button" value="Delete"></td>
+	<td id="<%=mid%>"><textarea readonly onclick="reply('<%=rid%>')" class="textinput" ><%=temp.from%>: <%=temp.content %></textarea>
+	<input type="submit" class="button" value="Delete" onclick="delete_message('<%=temp.content%>','<%=temp.from%>','<%=rid%>','<%=mid%>')"></td>
+	<td hidden id="<%=rid%>"><textarea class="textinput" id="<%=content %>" placeholder="Click again to close" rows="3" cols="50"></textarea>
+	<input type="submit" class="button" onclick="send_reply('<%=temp.to%>','<%=content %>','<%=temp.from%>','<%=rid %>')" value="Reply"></td>
+	<td></td>
 	</tr>
 	<%
 	i++;

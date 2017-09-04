@@ -1,25 +1,30 @@
 
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
+import javaClasses.Ad;
+import javaClasses.mysqlConnector;
 
 /**
- * Servlet implementation class makead
+ * Servlet implementation class ADd
  */
-@WebServlet("/makead")
-public class makead extends HttpServlet {
+@WebServlet("/AdServlet")
+public class AdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public makead() {
+    public AdServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,22 +34,21 @@ public class makead extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String role=request.getParameter("str");
-		if (role==null) {
-			System.out.println("CRAP");
-			return;
-		}
-		if (!(role.equals("ok"))){
-			request.setAttribute("errormessage","Only Hosts can submit new ads!!!");
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/res/jsp/login_success.jsp");
-			rd.forward(request, response);
-		}
-		else{
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/res/jsp/make_ad.jsp");
-			rd.forward(request, response);
-			//response.sendRedirect("./res/jsp/make_ad.jsp");
-		}
-	}
+		 mysqlConnector Connector = new mysqlConnector();
+		 Connector.establishConnection();
+		 String userid = request.getParameter("id");
+		 List<Ad> rs = null;
+		 try{
+			 if(userid!=null)
+				 rs = Connector.searchForAds("ID",userid);
+		 }catch(SQLException e){
+			 e.printStackTrace();
+		 }	
+		 request.setAttribute("results",rs);
+		 request.getRequestDispatcher("/res/jsp/ad.jsp").forward(request, response);
+		 
+		 
+	}	 
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

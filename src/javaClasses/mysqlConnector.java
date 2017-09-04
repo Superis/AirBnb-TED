@@ -219,6 +219,41 @@ public boolean searchForUser(String usrnm) throws SQLException{
 		
 		return null;
 	}
+	
+public List<Ad> searchForAds(String res,String from,String to,String diff) throws SQLException{
+		
+		if (con != null) {
+            java.sql.PreparedStatement statement = null;
+            ResultSet rs = null;
+
+            statement = con.prepareStatement("SELECT * FROM ROOM INNER JOIN(SELECT distinct(listing_id) FROM calendar WHERE available='t' AND date>=? AND date<? GROUP BY listing_id HAVING count(date)=?) WW ON ID=WW.listing_id AND CITY=? ORDER BY length(PRICE),PRICE");
+            statement.setString(4, res);
+            statement.setString(1, from);
+            statement.setString(2, to);
+            statement.setString(3, diff);
+            statement.setFetchSize(150);
+            rs = statement.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            String[] strs = new String[columnsNumber];
+            List<Ad> adList = new ArrayList<Ad>(); 
+            
+            while(rs.next()){
+            	for (int i = 1; i <= columnsNumber; i++) {
+       	         String columnValue = rs.getString(i);
+       	         strs[i-1] = columnValue;	 
+            	}
+            	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7]));
+            	
+            }
+            /*for(Ad temp: adList){
+            	temp.print();
+            }*/
+            return adList;
+		}
+		return null;
+	}
+	
 	public void makeReservation(String usrnm, String id) throws SQLException{
 		
 		if (con != null) {
@@ -256,6 +291,21 @@ public boolean searchForUser(String usrnm) throws SQLException{
 	        PreparedStatement statement = null;
 
 	        statement = con.prepareStatement("SELECT IMAGE FROM USER_ACCOUNT WHERE USER_NAME=?");
+	        statement.setString(1, usrnm);
+	        ResultSet rs = statement.executeQuery();
+	        if (rs.next()) {
+	        	String fin = rs.getString(1);
+	        	return fin;
+	        }
+		}
+		return null;
+	}
+	
+	public String FindRole(String usrnm) throws SQLException{
+		if (con != null) {
+	        PreparedStatement statement = null;
+
+	        statement = con.prepareStatement("SELECT ROLE FROM USER_ACCOUNT WHERE USER_NAME=?");
 	        statement.setString(1, usrnm);
 	        ResultSet rs = statement.executeQuery();
 	        if (rs.next()) {
@@ -317,6 +367,19 @@ public boolean searchForUser(String usrnm) throws SQLException{
         }
 
 }
+	public void deleteMessageFromDB(String from, String content) throws SQLException{
+		if (con != null) {
+		        	
+	      PreparedStatement statement = null;
+	      statement = con.prepareStatement("delete from MESSAGE where SENDER=? and CONTENT=?;");
+
+	      statement.setString(1, from);
+	      statement.setString(2, content);
+	      statement.executeUpdate();
+
+
+		}
+	}
 	
 	public List<Message> showMessages(String usrnm) throws SQLException{
 	
@@ -368,13 +431,14 @@ public boolean searchForUser(String usrnm) throws SQLException{
  
     }
 	
+	
 	public List<User> allUsers() throws SQLException{
 		
 		if (con != null) {
             java.sql.PreparedStatement statement = null;
             ResultSet rs = null;
 
-            statement = con.prepareStatement("SELECT * FROM USER_ACCOUNT;");
+            statement = con.prepareStatement("SELECT * FROM USER_ACCOUNT ORDER BY ROLE;");
             rs = statement.executeQuery();
             
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -400,7 +464,33 @@ public boolean searchForUser(String usrnm) throws SQLException{
 	}
 	
 	
+	public void holdRoom(String id,String from,String to) throws SQLException {
+		if (con != null) {
+            java.sql.PreparedStatement statement = null;
 
+            statement = con.prepareStatement("UPDATE calendar SET available='f' WHERE listing_id=? AND date>? AND date<=?");
+            
+            statement.setString(1,id);
+            statement.setString(2,from);
+            statement.setString(3,to);
+            statement.executeUpdate();
+		}
+	}
+	
+	public void ConfirmUser(String usrnm) throws SQLException{
+		if (con != null) {
+            java.sql.PreparedStatement statement = null;
+
+            statement = con.prepareStatement("UPDATE USER_ACCOUNT SET ROLE='H' WHERE USER_NAME=?");
+
+            statement.setString(1, usrnm);
+            statement.executeUpdate();
+
+
+        }
+		
+	}
+	
 	public void addAd(String access, String desc, String rules, String from, String to
 		,String maxpeople,String minprice,String adcost,String type, String beds, String wcs, String bedrooms, String living_rooms, String area) throws SQLException{
 		if (con != null) {

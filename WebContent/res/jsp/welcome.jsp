@@ -61,8 +61,8 @@ else if(user != null) response.sendRedirect("/TED/ConnectedServlet");
  <input type="text" name="phone">
  <table>
  <tr>
- <td>Choose your roles: Tenant <input type="checkbox" name="tenant"></td>
- <td> Host <input type="checkbox" name="host"></td>
+ <td>Choose your roles: Tenant <input type="radio" name="host/tenant" id="tenant" value="Y"></td>
+ <td> Host <input type="radio" name="host/tenant" id="host" value="N"></td>
  </tr>
  </table>
   

@@ -1,19 +1,18 @@
-package datapackage;
-
+package javaClasses;
 import java.util.Date;
 
 public class Calendar {
 	
 	   private int listing_id;
-	   private java.sql.Date date;
+	   private String date;
 	   private String available;
-	   private float price;
+	   private String price;
 	 
 	   public Calendar() {
 	 
 	   }
 	 
-	   public Calendar(int id,java.sql.Date date, String available, float price) {
+	   public Calendar(int id,String date, String available, String price) {
 	       this.listing_id = id;
 	       this.date=date;
 	       this.available = available;
@@ -36,19 +35,19 @@ public class Calendar {
 	       this.listing_id = id;
 	   }
 	 
-	   public java.sql.Date getDate(){
+	   public String getDate(){
 		   return date;
 	   }
 	   
-	   public void setDate(java.sql.Date date) {
+	   public void setDate(String date) {
 	       this.date = date;
 	   }
 	   
-	   public float getPrice() {
+	   public String getPrice() {
 	       return price;
 	   }
 	 
-	   public void setPrice(float price) {
+	   public void setPrice(String price) {
 	       this.price = price;
 	   }
 	 

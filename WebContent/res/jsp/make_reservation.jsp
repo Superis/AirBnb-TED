@@ -10,12 +10,7 @@
 
 <%@ page import="javaClasses.mysqlConnector" %>
 <%@ page import="java.sql.*" %>
-<%
 
-mysqlConnector mysql = new mysqlConnector();
-mysql.establishConnection();
-mysql.makeReservation(request.getParameter("user"),request.getParameter("id"));
-mysql.destroyConnection();
-%>
+<h3> RESERVATION CONFIRMED</h3>
 </body>
 </html>

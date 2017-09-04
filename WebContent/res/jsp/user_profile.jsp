@@ -38,7 +38,13 @@
 <td><label>Role: </label></td>
 <td><%=strs[4] %></td>
 <td>
-<input type="submit" class="buttonNW" value="Confirm"></td>
+<% if(strs[4].equals("A")){ %>
+<form action="${pageContext.request.contextPath}/Confirm?str=<%=strs[0]%>" method="post">
+<input type="submit" class="buttonNW" value="Confirm">
+</form>
+</td>
+<% } %>
+</td>
 </tr>
 </table>
     

@@ -54,6 +54,9 @@
  String[] strs = new String[columnsNumber];*/
  List<Ad> adList = (List<Ad>) request.getAttribute("results");
  
+ if (adList==null || adList.isEmpty())
+		%> NO RESULTS FOUND <%
+	else{
  for(Ad temp: adList){
 	 total++;
  }
@@ -87,7 +90,7 @@
 
  <%
  		
-	 
+ }
  }
  %>
  
@@ -97,7 +100,7 @@
     <%for(int i=0;i<((total/10)+1);i++) {
     %>
     
-    <a onclick="openNewTen('<%=10*i%>','<%= cityname %>')" > <%=(i+1)%> </a> 
+    <a onclick="openNewTen('<%=10*i%>','<%= request.getParameter("str") %>','<%= request.getParameter("from")%>','<%= request.getParameter("to")%>','<%=request.getParameter("diff")%>')" > <%=(i+1)%> </a> 
     <%} %>
     <a href="#velakia" >&raquo;</a>
   </div>

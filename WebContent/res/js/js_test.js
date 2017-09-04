@@ -12,7 +12,7 @@ function openModal(id) {
 			document.getElementById("modalContent").innerHTML = this.responseText;
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/ad.jsp?id="+id, true);
+	xhttp.open("GET", "/TED/AdServlet?id="+id, true);
 	xhttp.send();
 	
 	document.getElementById('myModal').style.display = "block";
@@ -45,21 +45,43 @@ function welcome(){
 	show_boxes();
 }
 
+function parseDate(str) {
+    var mdy = str.split('/');
+    return new Date(mdy[2], mdy[0]-1, mdy[1]);
+}
+
+function daydiff(first, second) {
+    return Math.round((second-first)/(1000*60*60*24));
+}
+
+
 function show_boxes(count) {
 	
-	var place = document.getElementById("place")
+	var place = document.getElementById("place");
+	var start=document.getElementById("from");
+	var finish=document.getElementById("to");
 	var xhttp;    
-
+	var diff=daydiff(parseDate(start.value), parseDate(finish.value));
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("toChange").innerHTML = this.responseText;
 			//document.getElementById('loader').style.display = "none";
 		}
-	};
-	//xhttp.open("GET", "/TED/res/jsp/results.jsp?str="+place.value, true);
-	xhttp.open("GET", "/TED/DbServlet?str="+place.value+"&count="+count, true);
+	}
+	//alert((!start.value) || (!finish.value));
+	if (start.value && finish.value){
+		var mdy=start.value.split('/');
+		var from=mdy[2].concat("-",mdy[0],"-",mdy[1]);
+		var mdy2=finish.value.split('/');
+		var to=mdy2[2].concat("-",mdy2[0],"-",mdy2[1]);
+		xhttp.open("GET", "/TED/DbServlet?str="+place.value+"&count="+count+"&from="+from+"&to="+to+"&diff="+diff, true);
+	}
+	else{
+		xhttp.open("GET", "/TED/DbServlet?str="+place.value+"&count="+count+"&from="+start.value+"&to="+finish.value+"&diff="+diff, true);
+	}
 	xhttp.send();
+	
 }
 
 function show_ads(count){
@@ -80,10 +102,10 @@ function show_ads(count){
     }
 }
 
-function openNewTen(count,str) {
+function openNewTen(count,str,from,to,diff) {
 	//alert("I'm trying to do TED!!");
 	//var per=document.getElementById("newten");
-	var xhttp;  
+	var xhttp;    
 	
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -92,7 +114,7 @@ function openNewTen(count,str) {
 		}
 	};
 	//xhttp.open("GET", "/TED/res/jsp/results.jsp?count="+count+"&str="+str, true);
-	xhttp.open("GET", "/TED/DbServlet?count="+count+"&str="+str, true);
+	xhttp.open("GET", "/TED/DbServlet?count="+count+"&str="+str+"&from="+from+"&to="+to+"&diff="+diff, true);
 	xhttp.send();
 	
 }
@@ -247,7 +269,7 @@ function make_reservation(user,id){
 			alert("Resrvation has been comfirmed");
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/make_reservation.jsp?user="+user+"&id="+id, true);
+	xhttp.open("GET", "/TED/ReservationServlet?user="+user+"&id="+id, true);
 	xhttp.send();
 }
 
@@ -381,7 +403,23 @@ function send_reply(from,content,to,id){
 	
 }
 
-
+function delete_message(content,from,rid,mid){
+	var xhttp;    
+	
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById(rid).style.display = 'none'
+			document.getElementById(mid).style.display = 'none'
+			alert("Message has been deleted!")
+		}
+	};
+	xhttp.open("GET", "/TED/DbServlet?delete_message=show" +
+			"&from="+from+"&content="+content, true);
+	xhttp.send();
+	
+	
+}
 
 
 

@@ -35,6 +35,7 @@ try {
 	e.printStackTrace();
 }
 img_loc="/files/"+img_loc;
+String thisad=(String)request.getSession(false).getAttribute("strtarget");
 %>
 <!--  <h3>Hi <%=userName %>, Login successful. Your Session ID=<%=sessionID %></h3>
 <br>
@@ -45,20 +46,34 @@ User=<%=user %>
   <a onclick="show_dropdown()"> <img src=<%=img_loc%> height="40" width="40"> <%=userName%> </a> 
 </div>
 
+<% if (thisad!=null && thisad.equals("ok")){%>
+
 <div id="myDropdown" class="dropdown-content">
     <a href="#" onclick="show_settings()">Profile Settings</a>
     <a href="#" onclick="show_reservations()">Reservations</a>
     <a href="#" onclick="show_messages('<%=user%>')">My Messages</a>
     <a href="#" onclick="show_ads(0)">My Ads</a>
-    <a href="#" onclick="make_ad()">Make new ad</a>
+    <a href="#" onclick="make_ad()" id="ad">Make new ad</a>
     <form action="${pageContext.request.contextPath}/LogoutServlet" method="post">
     <a href="#"><input type="submit" class="button" value="Logout" ></a>
 	</form>
 </div> 
+<%}
+else{%>
+<div id="myDropdown" class="dropdown-content">
+    <a href="#" onclick="show_settings()">Profile Settings</a>
+    <a href="#" onclick="show_reservations()">Reservations</a>
+    <a href="#" onclick="show_messages('<%=user%>')">My Messages</a>
+    <form action="${pageContext.request.contextPath}/LogoutServlet" method="post">
+    <a href="#"><input type="submit" class="button" value="Logout" ></a>
+	</form>
+</div> 
+<% }%>
  <br>
  
+<a style="color: red;">${errormessage} </a>
 
-<div id="toChange">
+ <div id="toChange">
 	<table class="search_table">
 	<tr>
   	 <td><input type="text" class="search" id="place" placeholder="Place..."></td>

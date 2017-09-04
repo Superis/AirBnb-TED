@@ -31,12 +31,22 @@ Hello Admin!
   for(User temp: usrList){
  	  temp.getAll(strs);
  	  String img_loc="/files/"+strs[5];
+ 	 String userrole;
+	  String ucolor="w3-white";
+	  if (strs[4].equals("A")){
+		  userrole="Tenant,waiting for a host approval!";
+		  ucolor="w3-red";
+	  }
+	  else if (strs[4].equals("H"))
+		  userrole="Host";
+	  else
+		  userrole="Tenant";
   %>
     <li class="w3-bar">
-      <span onclick="show_profile('<%=strs[0] %>')" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">></span>
-      <img  height="60" width="40" src=<%=img_loc %> class="w3-bar-item w3-circle w3-hide-small" style="width:85px">
+      <span onclick="show_profile('<%=strs[0] %>')" class="w3-bar-item w3-button <%= ucolor %> w3-xlarge w3-right">></span>
+      <img   height="60" width="40" src=<%=img_loc %> class="w3-bar-item w3-circle w3-hide-small" style="width:85px">
       <div class="w3-bar-item">
-        <span class="w3-large"><%=strs[0] %></span><br>
+        <span class="w3-large"><%=strs[0] %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong><%= userrole %></strong>  </span><br>
       </div>
     </li>
 
@@ -45,16 +55,6 @@ Hello Admin!
   }
 
 %>
-
-
-    <li class="w3-bar">
-      <span onclick="this.parentElement.style.display='none'" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>
-      <img src="img_avatar6.png" class="w3-bar-item w3-circle w3-hide-small" style="width:85px">
-      <div class="w3-bar-item">
-        <span class="w3-large">Jane</span><br>
-        <span>Accountant</span>
-      </div>
-    </li>
   </ul>
 </div>
 

@@ -14,19 +14,23 @@
 <%@ page import="javaClasses.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
-<%
-	String id = request.getParameter("id");
-	mysqlConnector Connector = new mysqlConnector();
-	Connector.establishConnection();
-	List<Ad> adList = (List<Ad>)Connector.searchForAds("ID",id);
-	Ad temp = adList.get(0);
-	Connector.destroyConnection();
+<%	
+	Ad item=null;
+	if (request.getAttribute("results")==null){
+		%> PROBLEM <%
+	}
+	else{
+		List<Ad> adList = (List<Ad>) request.getAttribute("results");
+		item=adList.get(0);
+	}
+	
+	if (item!=null){	 
 %>
 
 
 <div class="green">
 	<h3>
- 		<center><%=temp.name%></center>
+ 		<center><%=item.name%></center>
  	</h3>
 </div>
 <br>
@@ -35,12 +39,13 @@
 </h4>
 <br>
 <br>
-  <%= temp.desc %>
+  <%= item.desc %>
 <br>
-<img src=<%=temp.pic%> height="300" width="500">
+<img src=<%=item.pic%> height="300" width="500">
 <br>
 
 <%
+
 String user = "none";
 if(request.getSession(false) != null)
 {
@@ -48,17 +53,22 @@ if(request.getSession(false) != null)
 	user = (String)request.getSession(false).getAttribute("user");
 	if(user == null)
 	{
+		System.out.print("problem");
 %>
 
 <%
 
 	}
 	else {
+		System.out.print("not that");
 %>
-	<input type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=id%>')">
+HELLO
+	<input type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
+	<div id="toChangeAd"></div>
 	<textarea class="textinput" id="content" rows="3" cols="50"></textarea>
-	<input type="submit" name="send_message" class="buttonNW" value="Send message to host" onclick="send_message('<%=user%>','<%=temp.id%>')">
+	<input type="submit" name="send_message" class="buttonNW" value="Send message to host" onclick="send_message('<%=user%>','<%=item.id%>')">
 <%	}
+  }
 }%>
 
 
