@@ -282,7 +282,7 @@ function show_reservations(){
 			document.getElementById("toChange").innerHTML = this.responseText;
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/show_reservations.jsp", true);
+	xhttp.open("GET", "/TED/DbServlet?show_reservations=show", true);
 	xhttp.send();
 	
 	var x = document.getElementById('myDropdown');
@@ -316,31 +316,6 @@ function show_path(val){
 }
 
 
-function make_ad(){
-	var xhttp;    
-	
-	xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("toChange").innerHTML = this.responseText;
-			
-			//load another js file
-			$.getScript('/TED/res/js/google_maps.js', function()
-			{
-			    // script is now loaded and executed.
-			    // put your dependent JS here.
-				initMap();
-			});
-		}
-	};
-	xhttp.open("GET", "/TED/res/jsp/make_ad.jsp", true);
-	xhttp.send();
-
-	var x = document.getElementById('myDropdown');
-    if (x.style.display !== 'none') {
-        x.style.display = 'none';
-    }
-}
 
 function ad_alert(){
 	alert("Ad has been registered successfully!");
@@ -421,7 +396,51 @@ function delete_message(content,from,rid,mid){
 	
 }
 
+function make_ad(){
+	var xhttp;    
+	
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("toChange").innerHTML = this.responseText;
+			
+			//load another js file
+			$.getScript('/TED/res/js/google_maps.js', function()
+			{
+			    // script is now loaded and executed.
+			    // put your dependent JS here.
+				initMap(null);
+			});
+		}
+	};
+	xhttp.open("GET", "/TED/res/jsp/make_ad.jsp?func=insert", true);
+	xhttp.send();
 
+	var x = document.getElementById('myDropdown');
+    if (x.style.display !== 'none') {
+        x.style.display = 'none';
+    }
+}
+
+function processing(id,address){
+	var xhttp;    
+	
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("toChange").innerHTML = this.responseText;
+			$.getScript('/TED/res/js/google_maps.js', function()
+					{
+					    // script is now loaded and executed.
+					    // put your dependent JS here.
+						initMap(address);
+					});
+		}
+	};
+	xhttp.open("GET", "/TED/DbServlet?process_ad=show" +
+			"&id="+id, true);
+	xhttp.send();
+}
 
 
 

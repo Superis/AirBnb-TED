@@ -1,6 +1,10 @@
 
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import javaClasses.Ad;
 import javaClasses.Message;
@@ -85,22 +90,6 @@ public class DbServlet extends HttpServlet {
 			 request.getRequestDispatcher("/res/jsp/user_profile.jsp").forward(request, response);
 			 
 		 }
-		 else if(request.getParameter("submitAd") != null){
-			 String access = request.getParameter("access");
-			 String desc = request.getParameter("description");
-			 String rules = request.getParameter("rules");
-			 String from = request.getParameter("from");
-			 String to = request.getParameter("to");
-			 String maxpeople = request.getParameter("maxpeople");
-			 String minprice = request.getParameter("minprice");
-			 String adcost = request.getParameter("adcost");
-			 String type = request.getParameter("type");
-			 String beds = request.getParameter("beds");
-			 String wcs = request.getParameter("wcs");
-			 String bedrooms = request.getParameter("bedrooms");
-			 String living_rooms = request.getParameter("living_rooms");
-			 String area = request.getParameter("area");
-		 }
 		 else if(request.getParameter("send_message") != null){
 			 
 			 try {
@@ -167,6 +156,30 @@ public class DbServlet extends HttpServlet {
 			}
 			 
 			 
+		 }
+		 else  if(request.getParameter("show_reservations") != null){
+			 try {
+				List<Ad> adList = Connector.searchForReservations((String)request.getSession(false).getAttribute("user"));
+				request.setAttribute("reservations", adList);
+				 request.getRequestDispatcher("/res/jsp/show_reservations.jsp").forward(request, response);
+			 } catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 }
+		 else if(request.getParameter("process_ad") != null){
+			 Ad ad = null;
+			 try {
+				ad = Connector.findRoom(request.getParameter("id"));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally{
+				Connector.destroyConnection();
+			}
+			 request.setAttribute("ad", ad);
+			 request.getRequestDispatcher("/res/jsp/make_ad.jsp?func=update").forward(request, response);
 		 }
 		 else {
 			 String myinfo = request.getParameter("count");
