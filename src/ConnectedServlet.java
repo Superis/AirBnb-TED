@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
@@ -98,21 +99,46 @@ public class ConnectedServlet extends HttpServlet {
 		else if(request.getParameter("submitAd") != null){
 			
 			 String fileName ="none";
+			 
 			 Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
-			  if (filePart != null){
-			  	//fileName="";
-			  //else{
-			 fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-			 InputStream fileContent = filePart.getInputStream();
-			 //String loc=.getServletContext().getRealPath("/WebContent/res/img");
-			 File folder=new File("/home/paris/Pictures/TEDImages");
-			 File file=new File(folder,fileName);
-			 file.setReadable(true, false);
-			 file.setExecutable(true, false);
-			 file.setWritable(true, false);
-			 System.out.println(file.toPath());
-			 Files.copy(fileContent, file.toPath());
-			  }
+			    boolean given=true;
+			    
+			    //if (filePart==null)
+			    //	fileName="";
+			    //else{
+				fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+				if (fileName == null || fileName.isEmpty()) {
+				    // It's not submitted or filled out.
+					given=false;
+					fileName="";
+					//request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
+					request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
+				}
+				else{
+					InputStream fileContent = filePart.getInputStream();
+				    //String loc=.getServletContext().getRealPath("/WebContent/res/img");
+				    File folder=new File("/home/paris/Pictures/TEDImages");
+				    //File file=new File(folder,fileName);
+				    System.out.println(fileName);
+				    //Files.copy(fileContent, file.toPath());
+				    //}
+				    //System.out.println(fileName.contains("\\s"));
+				    String fileName2="";
+				    String somename=fileName;
+				    int i;
+				    if (fileName.contains(" ")) {
+				    	//System.out.println("fileName");
+				    	String[] temp=fileName.split("\\s+");
+				    	for (i=0;i<temp.length;i++)
+				    		fileName2=fileName2+temp[i]; 
+				    	somename=fileName2;
+				    }
+				    //System.out.println(fileName);
+				    String temp2[]=somename.split("(?=\\.)");
+				    File file = File.createTempFile(temp2[0]+"-", temp2[1], folder);
+				    Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				    //}
+				}
 			 String[] tokkens = request.getParameter("position").split(", ");//0 address, 1 city + postal code, 2 country
 			 String address = tokkens[0];
 			 String city_postal = tokkens[1];
@@ -122,10 +148,11 @@ public class ConnectedServlet extends HttpServlet {
 			 
 			 //System.out.println(request.getParameter("from")+request.getParameter("to"));
 			 //room.print();
-			 List<String> dates = new DateUtil().getDatesBetweenDates(request.getParameter("from"), request.getParameter("to"));
 			 
 			 if(request.getParameter("func").equals("insert")){
 				 
+				 List<String> dates = new DateUtil().getDatesBetweenDates(request.getParameter("from"), request.getParameter("to"));
+
 				 Random rnd = new Random();
 				 int n = 100000 + rnd.nextInt(900000);
 				 String id = Integer.toString(n); 

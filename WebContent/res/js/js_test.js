@@ -413,7 +413,7 @@ function make_ad(){
 			});
 		}
 	};
-	xhttp.open("GET", "/TED/res/jsp/make_ad.jsp?func=insert", true);
+	xhttp.open("GET", "/TED/DbServlet?process_ad=show&func=insert&dates=yes", true);
 	xhttp.send();
 
 	var x = document.getElementById('myDropdown');
@@ -437,7 +437,7 @@ function processing(id,address){
 					});
 		}
 	};
-	xhttp.open("GET", "/TED/DbServlet?process_ad=show" +
+	xhttp.open("GET", "/TED/DbServlet?process_ad=show&func=update&dates=no" +
 			"&id="+id, true);
 	xhttp.send();
 }

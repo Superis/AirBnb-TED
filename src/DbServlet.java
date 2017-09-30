@@ -170,7 +170,8 @@ public class DbServlet extends HttpServlet {
 		 else if(request.getParameter("process_ad") != null){
 			 Ad ad = null;
 			 try {
-				ad = Connector.findRoom(request.getParameter("id"));
+				 String id = request.getParameter("id");
+				ad = Connector.findRoom(id);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -178,7 +179,10 @@ public class DbServlet extends HttpServlet {
 			finally{
 				Connector.destroyConnection();
 			}
+			 if( ad == null) ad = new Ad("","","","","","","","",
+						"","","","","","","","");
 			 request.setAttribute("ad", ad);
+			 //String dates = request.getParameter("dates");
 			 request.getRequestDispatcher("/res/jsp/make_ad.jsp?func=update").forward(request, response);
 		 }
 		 else {

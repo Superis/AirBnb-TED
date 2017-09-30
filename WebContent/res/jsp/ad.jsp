@@ -62,7 +62,6 @@ if(request.getSession(false) != null)
 	else {
 		System.out.print("not that");
 %>
-HELLO
 	<input type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
 	<div id="toChangeAd"></div>
 	<textarea class="textinput" id="content" rows="3" cols="50"></textarea>

@@ -3,8 +3,6 @@
 
 <%@ page import="javaClasses.*" %>
 <%Ad ad = (Ad) request.getAttribute("ad");
-if(ad == null) ad = new Ad("","","","","","","","",
-		"","","","","","","","");
 
 String func = request.getParameter("func");
 %>
@@ -24,10 +22,14 @@ String func = request.getParameter("func");
  	<tr><td style="vertical-align:top">Κανόνες Ενοικίασης</td>
  	<td><textarea class="textinput" name="rules" rows="3" cols="50"></textarea></td>
  	</tr>
+ 	<%
+ 	if(request.getParameter("dates").equals("yes")){
+ 	%>
  	<tr><td style="vertical-align:top">Ημερομηνίες</td>
  	<td><input type="text" class="search" name="from" id="from" onclick="$('#from').datepicker();$('#from').datepicker('show');" placeholder="Stay from(date)..">
  	<input type="text" class="search" name="to" id="to" onclick="$('#to').datepicker();$('#to').datepicker('show');" placeholder="To(date).."></td>
  	</tr>
+ 	<% }%>
  </table>
  </td>
  <td><input class="buttonNW" id="submit" type="button" value="Ψάξε διεύθυνση">
@@ -38,11 +40,11 @@ String func = request.getParameter("func");
  <table style="width:50%">
  	<tr>
  	<td style="vertical-align:top">Μέγιστος αριθμός ατόμων
- 	<input type="text" class="textinput" placeholder="<%=ad.maxp%>" name="maxpeople"></td>
+ 	<input type="text" class="textinput" value="<%=ad.maxp%>" name="maxpeople"></td>
  	<td style="vertical-align:top">Ελάχιστη τιμή
- 	<input type="text" class="textinput" placeholder="<%=ad.price%>" name="minprice"></td>
+ 	<input type="text" class="textinput" value="<%=ad.price%>" name="minprice"></td>
  	<td style="vertical-align:top">Eπιπλέον κόστος ανά άτομο
- 	<input type="text" class="textinput" placeholder="<%=ad.ppr%>" name="adcost" ></td>
+ 	<input type="text" class="textinput" value="<%=ad.ppr%>" name="adcost" ></td>
  	</tr>
  </table>
  </td></tr>
@@ -50,11 +52,11 @@ String func = request.getParameter("func");
  <table style="width:50%">
  	<tr>
  	<td style="vertical-align:top">Τύπος ενοικιαζόμενου χώρου
- 	<input type="text" class="textinput" placeholder="<%=ad.type%>" name="type"></td>
+ 	<input type="text" class="textinput" value="<%=ad.type%>" name="type"></td>
  	<td style="vertical-align:top">Αριθμός κρεβατιών
- 	<input type="text" class="textinput" placeholder="<%=ad.beds%>" name="beds"></td>
+ 	<input type="text" class="textinput" value="<%=ad.beds%>" name="beds"></td>
  	<td style="vertical-align:top">Αριθμός μπάνιων
- 	<input type="text" class="textinput" placeholder="<%=ad.wcs%>" name="wcs"></td>
+ 	<input type="text" class="textinput" value="<%=ad.wcs%>" name="wcs"></td>
  	</tr>
  </table>
  </td>
@@ -65,11 +67,11 @@ String func = request.getParameter("func");
  <table style="width:50%">
  	<tr>
  	<td style="vertical-align:top">Αριθμός υπνοδωματίων
- 	<input type="text" class="textinput" placeholder="<%=ad.bedrooms%>" name="bedrooms"></td>
+ 	<input type="text" class="textinput" value="<%=ad.bedrooms%>" name="bedrooms"></td>
  	<td style="vertical-align:top">Αριθμός καθιστικών
- 	<input type="text" class="textinput" placeholder="<%=ad.living_rooms%>" name="living_rooms"></td>
+ 	<input type="text" class="textinput" value="<%=ad.living_rooms%>" name="living_rooms"></td>
  	<td style="vertical-align:top">Εμβαδό χώρου
- 	<input type="text" class="textinput" placeholder="<%=ad.area%>" name="area"></td>
+ 	<input type="text" class="textinput" value="<%=ad.area%>" name="area"></td>
  	</tr>
  </table>
  </td></tr>
