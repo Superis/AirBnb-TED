@@ -5,7 +5,9 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/res/css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/res/css/style2.css"/>
-
+	<link rel="stylesheet" href="jquery.rating.css">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery.rating.js"></script>
 </head>
 
 <body>
@@ -62,6 +64,14 @@ if(request.getSession(false) != null)
 	else {
 		System.out.print("not that");
 %>
+  <form>
+            <input type="radio" name="rating" value="1" class="star" id="n1"><label for="n1">Bad</label>
+            <input type="radio" name="rating" value="2" class="star" id="n2"><label for="n2">Not Impressed</label>
+            <input type="radio" name="rating" value="3" class="star" id="n3"><label for="n3">Fair</label>
+            <input type="radio" name="rating" value="4" class="star" id="n4"><label for="n4">Very Good</label>
+            <input type="radio" name="rating" value="5" class="star" id="n5"><label for="n5">Brilliant</label>
+            <input type="submit" value="Rate It!"  class="buttonNW" onclick="make_review('<%=user%>','<%=item.id%>')">
+  </form>
 HELLO
 	<input type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
 	<div id="toChangeAd"></div>
@@ -70,6 +80,7 @@ HELLO
 <%	}
   }
 }%>
+
 
 
 <br>

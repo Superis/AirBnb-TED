@@ -46,7 +46,7 @@ public class AdServlet extends HttpServlet {
 		 }	
 		 request.setAttribute("results",rs);
 		 request.getRequestDispatcher("/res/jsp/ad.jsp").forward(request, response);
-		 
+		
 		 
 	}	 
 

@@ -1,25 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ page import="javaClasses.*" %>
-<%Ad ad = (Ad) request.getAttribute("ad");
-if(ad == null) ad = new Ad("","","","","","","","",
-		"","","","","","","","");
-
-String func = request.getParameter("func");
-%>
 <div>
 <input type="submit" class="buttonNW" value="Back to search" onclick="show_search()">
-<form action="${pageContext.request.contextPath}/ConnectedServlet?func=<%= func%>&id=<%=ad.id %>" method="post" enctype="multipart/form-data">
+<form action="${pageContext.request.contextPath}/DbServlet" method="post">
 <table>
  <tr>
  <td style="vertical-align:top">
  <table>
  	<tr><td style="vertical-align:top">Πρόσβαση</td>
- 	<td><textarea class="textinput" name="access" rows="3" cols="50"><%=ad.name%></textarea></td>
+ 	<td><textarea class="textinput" name="access" rows="3" cols="50"></textarea></td>
  	</tr>
  	<tr><td style="vertical-align:top">Περιγραφή</td>
- 	<td><textarea class="textinput" name="description" rows="3" cols="50"><%=ad.desc %></textarea></td>
+ 	<td><textarea class="textinput" name="description" rows="3" cols="50"></textarea></td>
  	</tr>
  	<tr><td style="vertical-align:top">Κανόνες Ενοικίασης</td>
  	<td><textarea class="textinput" name="rules" rows="3" cols="50"></textarea></td>
@@ -31,18 +24,18 @@ String func = request.getParameter("func");
  </table>
  </td>
  <td><input class="buttonNW" id="submit" type="button" value="Ψάξε διεύθυνση">
- <input class="textinput" type="text" id="pos" value="none" name="position"></input>
+ <input class="textinput" type="text" id="pos" value="none" ></input>
  <div  id = "map" style = "width:350px; height:300px;"></div></td>
  </tr>
  <tr><td>
  <table style="width:50%">
  	<tr>
  	<td style="vertical-align:top">Μέγιστος αριθμός ατόμων
- 	<input type="text" class="textinput" placeholder="<%=ad.maxp%>" name="maxpeople"></td>
+ 	<input type="text" class="textinput" name="maxpeople"></td>
  	<td style="vertical-align:top">Ελάχιστη τιμή
- 	<input type="text" class="textinput" placeholder="<%=ad.price%>" name="minprice"></td>
+ 	<input type="text" class="textinput" name="minprice"></td>
  	<td style="vertical-align:top">Eπιπλέον κόστος ανά άτομο
- 	<input type="text" class="textinput" placeholder="<%=ad.ppr%>" name="adcost" ></td>
+ 	<input type="text" class="textinput" name="adcost"></td>
  	</tr>
  </table>
  </td></tr>
@@ -50,26 +43,25 @@ String func = request.getParameter("func");
  <table style="width:50%">
  	<tr>
  	<td style="vertical-align:top">Τύπος ενοικιαζόμενου χώρου
- 	<input type="text" class="textinput" placeholder="<%=ad.type%>" name="type"></td>
+ 	<input type="text" class="textinput" name="type"></td>
  	<td style="vertical-align:top">Αριθμός κρεβατιών
- 	<input type="text" class="textinput" placeholder="<%=ad.beds%>" name="beds"></td>
+ 	<input type="text" class="textinput" name="beds"></td>
  	<td style="vertical-align:top">Αριθμός μπάνιων
- 	<input type="text" class="textinput" placeholder="<%=ad.wcs%>" name="wcs"></td>
+ 	<input type="text" class="textinput" name="wcs"></td>
  	</tr>
  </table>
  </td>
- <td style="vertical-align:top">Επιλέξτε εικόνες:<label class="fileContainer" >Choose image...<input type="file" name="file" onchange="show_path(this.value)"></label>
-	<font id="path" color="green" style="display: none;">Image has been selected</font></td>
+ <td style="vertical-align:top">Επιλέξτε εικόνες:<input class="fileContainer" type="file" name="img" multiple></td>
  </tr>
  <tr><td>
  <table style="width:50%">
  	<tr>
  	<td style="vertical-align:top">Αριθμός υπνοδωματίων
- 	<input type="text" class="textinput" placeholder="<%=ad.bedrooms%>" name="bedrooms"></td>
+ 	<input type="text" class="textinput" name="bedrooms"></td>
  	<td style="vertical-align:top">Αριθμός καθιστικών
- 	<input type="text" class="textinput" placeholder="<%=ad.living_rooms%>" name="living_rooms"></td>
+ 	<input type="text" class="textinput" name="living_rooms"></td>
  	<td style="vertical-align:top">Εμβαδό χώρου
- 	<input type="text" class="textinput" placeholder="<%=ad.area%>" name="area"></td>
+ 	<input type="text" class="textinput" name="area"></td>
  	</tr>
  </table>
  </td></tr>

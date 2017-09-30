@@ -7,24 +7,28 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%@ page import="javaClasses.Ad" %>
+<%@ page import="javaClasses.mysqlConnector" %>
 <%@ page import="java.sql.*" %>
-<%@ page import="java.util.*" %>
  <% 
- List<Ad> reservations = (List<Ad>)request.getAttribute("reservations");
+ 
+ mysqlConnector Connector = new mysqlConnector();
+ Connector.establishConnection();
+ ResultSet rs = Connector.searchForReservations((String)request.getSession(false).getAttribute("user"));
+ 
+ ResultSetMetaData rsmd = rs.getMetaData();
+ int columnsNumber = rsmd.getColumnCount();
+ String[] strs = new String[columnsNumber];
+ while(rs.next()){
+	 for (int i = 1; i <= columnsNumber; i++) {
+	         String columnValue = rs.getString(i);
+	         strs[i-1] = columnValue;	 
+	 }
  %>
- <ul>
+ <%=strs[1]%>
  <%
-	for(Ad ad: reservations){
-		%>
-		<li style="border: groove;">
-		<input type="submit" value="Διαγραφή">
-		<%=ad.id%>,<%=ad.name%>,<%=ad.city %>,<%=ad.address %>,<%=ad.country %>, <%=ad.price %>
-		</li>
-		<%
-	}
+ } 
  %>
-</ul>
+
 <input type="submit" class="buttonNW" value="Back to search" onclick="show_search()">
 </body>
 </html>

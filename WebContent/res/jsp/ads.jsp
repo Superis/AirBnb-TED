@@ -50,10 +50,10 @@
  <div class="Content">
 	<br>
 	<img src=<%=temp.pic	%> height="100" width="100">
-	<%=temp.id%>,<%=temp.name%>,<%=temp.city %>,<%=temp.address %>,<%=temp.country %>, <%=temp.price %>,<%=j %>
+	<%=temp.id%>,<%=temp.name%>,<%=temp.city %>,<%=temp.state %>,<%=temp.country %>, <%=temp.price %>,<%=j %>
 	<!-- <input type="button" class="button" onclick="clicked()" value="More info"></input>-->
  </div>
- <input type="submit" class="buttonNW" value="Επεξεργασία" onclick="processing('<%=temp.id%>','<%=temp.address %>')">
+ <input type="submit" class="buttonNW" value="Επεξεργασία" onclick="">
 </li>
 
  <%

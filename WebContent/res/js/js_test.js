@@ -259,6 +259,21 @@ function register_unavailable(){
 	btn.disabled = true;
 }
 
+function make_review(user,id){
+	var xhttp;    
+
+	var score = document.querySelector('input[name="rating"]:checked').value;
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("toChangeAd").innerHTML = this.responseText;
+			alert("Review has been submitted : " +score);
+		}
+	};
+	xhttp.open("GET", "/TED/ReviewServlet?user="+user+"&id="+id+"&review="+score, true);
+	xhttp.send();
+}
+
 function make_reservation(user,id){
 	var xhttp;    
 
@@ -282,7 +297,7 @@ function show_reservations(){
 			document.getElementById("toChange").innerHTML = this.responseText;
 		}
 	};
-	xhttp.open("GET", "/TED/DbServlet?show_reservations=show", true);
+	xhttp.open("GET", "/TED/res/jsp/show_reservations.jsp", true);
 	xhttp.send();
 	
 	var x = document.getElementById('myDropdown');
@@ -316,6 +331,31 @@ function show_path(val){
 }
 
 
+function make_ad(){
+	var xhttp;    
+	
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("toChange").innerHTML = this.responseText;
+			
+			//load another js file
+			$.getScript('/TED/res/js/google_maps.js', function()
+			{
+			    // script is now loaded and executed.
+			    // put your dependent JS here.
+				initMap();
+			});
+		}
+	};
+	xhttp.open("GET", "/TED/res/jsp/make_ad.jsp", true);
+	xhttp.send();
+
+	var x = document.getElementById('myDropdown');
+    if (x.style.display !== 'none') {
+        x.style.display = 'none';
+    }
+}
 
 function ad_alert(){
 	alert("Ad has been registered successfully!");
@@ -396,51 +436,7 @@ function delete_message(content,from,rid,mid){
 	
 }
 
-function make_ad(){
-	var xhttp;    
-	
-	xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("toChange").innerHTML = this.responseText;
-			
-			//load another js file
-			$.getScript('/TED/res/js/google_maps.js', function()
-			{
-			    // script is now loaded and executed.
-			    // put your dependent JS here.
-				initMap(null);
-			});
-		}
-	};
-	xhttp.open("GET", "/TED/res/jsp/make_ad.jsp?func=insert", true);
-	xhttp.send();
 
-	var x = document.getElementById('myDropdown');
-    if (x.style.display !== 'none') {
-        x.style.display = 'none';
-    }
-}
-
-function processing(id,address){
-	var xhttp;    
-	
-	xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("toChange").innerHTML = this.responseText;
-			$.getScript('/TED/res/js/google_maps.js', function()
-					{
-					    // script is now loaded and executed.
-					    // put your dependent JS here.
-						initMap(address);
-					});
-		}
-	};
-	xhttp.open("GET", "/TED/DbServlet?process_ad=show" +
-			"&id="+id, true);
-	xhttp.send();
-}
 
 
 

@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -18,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import javaClasses.Ad;
-import javaClasses.DateUtil;
 import javaClasses.User;
 import javaClasses.mysqlConnector;
 
@@ -61,105 +58,78 @@ public class ConnectedServlet extends HttpServlet {
 			request.setAttribute("users",usrList);
 			request.getRequestDispatcher("/res/jsp/admin_page.jsp").forward(request, response);
 		}
-		else if(request.getParameter("saveChanges") != null){
+		if(request.getParameter("saveChanges") != null){
 			System.out.println("Changes have been saved!");
 			String fileName;
 			Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
+		    boolean given=true;
+		    
 		    //if (filePart==null)
-		    	//fileName="";
+		    //	fileName="";
 		    //else{
-			fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-		    InputStream fileContent = filePart.getInputStream();
-		    //String loc=.getServletContext().getRealPath("/WebContent/res/img");
-		    File folder=new File("/home/paris/Pictures/TEDImages");
-		    File file=new File(folder,fileName);
-		    file.setReadable(true, false);
-		    file.setExecutable(true, false);
-		    file.setWritable(true, false);
-		    System.out.println(file.toPath());
-		    Files.copy(fileContent, file.toPath());
-		    //}
-			mysqlConnector connector = new mysqlConnector();
+		    mysqlConnector connector = new mysqlConnector();
 			connector.establishConnection();
-			try {
-				connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password")
-						,request.getParameter("phone"),request.getParameter("email"),fileName);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			finally{
-			connector.destroyConnection();
-			}
-			
-			//request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
-			request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
-		}
-		else if(request.getParameter("submitAd") != null){
-			
-			 String fileName ="none";
-			 Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
-			  if (filePart != null){
-			  	//fileName="";
-			  //else{
-			 fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-			 InputStream fileContent = filePart.getInputStream();
-			 //String loc=.getServletContext().getRealPath("/WebContent/res/img");
-			 File folder=new File("/home/paris/Pictures/TEDImages");
-			 File file=new File(folder,fileName);
-			 file.setReadable(true, false);
-			 file.setExecutable(true, false);
-			 file.setWritable(true, false);
-			 System.out.println(file.toPath());
-			 Files.copy(fileContent, file.toPath());
-			  }
-			 String[] tokkens = request.getParameter("position").split(", ");//0 address, 1 city + postal code, 2 country
-			 String address = tokkens[0];
-			 String city_postal = tokkens[1];
-			 String country = tokkens[2];
-			 tokkens =  city_postal.split(" ");//0 city 1+2 postal code
-			 String city = tokkens[0];
-			 
-			 //System.out.println(request.getParameter("from")+request.getParameter("to"));
-			 //room.print();
-			 List<String> dates = new DateUtil().getDatesBetweenDates(request.getParameter("from"), request.getParameter("to"));
-			 
-			 if(request.getParameter("func").equals("insert")){
-				 
-				 Random rnd = new Random();
-				 int n = 100000 + rnd.nextInt(900000);
-				 String id = Integer.toString(n); 
-				 Ad room = new Ad(id,request.getParameter("access"),request.getParameter("description"),city,address,country,"/files/"+fileName,request.getParameter("minprice"),request.getParameter("adcost"),request.getParameter("maxpeople")
-						 ,request.getParameter("type"),request.getParameter("beds"),request.getParameter("wcs"),request.getParameter("bedrooms"),request.getParameter("living_rooms"),request.getParameter("area"));
-				 
-				 try {
-					 mysqlConnector Connector = new mysqlConnector();
-					 Connector.establishConnection();
-					 Connector.addAd(room, request.getSession(false).getAttribute("user").toString(),dates);
-					 Connector.destroyConnection();
-				 } catch (SQLException e) {
+			fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+			if (fileName == null || fileName.isEmpty()) {
+			    // It's not submitted or filled out.
+				System.out.println("nooooooooooo");
+				given=false;
+				try {
+					connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password"),request.getParameter("phone"),request.getParameter("email"),"");
+				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-			 }
-			 else if(request.getParameter("func").equals("update")){
-				 
-				 String id = request.getParameter("id");
-				 Ad room = new Ad(id,request.getParameter("access"),request.getParameter("description"),city,address,country,"/files/"+fileName,request.getParameter("minprice"),request.getParameter("adcost"),request.getParameter("maxpeople")
-						 ,request.getParameter("type"),request.getParameter("beds"),request.getParameter("wcs"),request.getParameter("bedrooms"),request.getParameter("living_rooms"),request.getParameter("area"));
-
-				 try {
-					 mysqlConnector Connector = new mysqlConnector();
-					 Connector.establishConnection();
-					 Connector.updateAd(room);
-					 Connector.destroyConnection();
-				 } catch (SQLException e) {
+				finally{
+				connector.destroyConnection();
+				}
+				
+				//request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
+				request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
+			}
+			else{
+				InputStream fileContent = filePart.getInputStream();
+			    //String loc=.getServletContext().getRealPath("/WebContent/res/img");
+			    File folder=new File("/home/peris/Pictures/TEDImages");
+			    //File file=new File(folder,fileName);
+			    System.out.println(fileName);
+			    //Files.copy(fileContent, file.toPath());
+			    //}
+			    //System.out.println(fileName.contains("\\s"));
+			    String fileName2="";
+			    int i;
+			    if (fileName.contains(" ")) {
+			    	//System.out.println("fileName");
+			    	String[] temp=fileName.split("\\s+");
+			    	for (i=0;i<temp.length;i++)
+			    		fileName2=fileName2+temp[i]; 	
+			    }
+			    //System.out.println(fileName);
+			    String temp2[]=fileName2.split("(?=\\.)");
+			    File file = File.createTempFile(temp2[0]+"-", temp2[1], folder);
+			    Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			    //}
+			    
+			    
+				
+				try {
+					if(given)
+						connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password")
+							,request.getParameter("phone"),request.getParameter("email"),file.toPath().getFileName().toString());
+					else
+						connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password")
+								,request.getParameter("phone"),request.getParameter("email"),"");
+				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			 }
-			 response.sendRedirect("/TED/ConnectedServlet");
+				finally{
+				connector.destroyConnection();
+				}
+				
+				//request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
+				request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
+			}
 		}
 		else request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
 	}

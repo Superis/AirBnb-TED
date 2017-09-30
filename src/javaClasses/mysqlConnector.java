@@ -7,9 +7,9 @@ import java.util.List;
 public class mysqlConnector {
 
 	
-	String URL = "jdbc:mysql://localhost:3306/TED?autoReconnect=true&useSSL=true";
+	String URL = "jdbc:mysql://localhost:3306/newdb?autoReconnect=true&useSSL=true";
     String USERNAME = "root";
-    String PASSWORD = "1234";
+    String PASSWORD = "6666";
     Connection con = null;
 	
     public void establishConnection(){
@@ -159,8 +159,7 @@ public boolean searchForUser(String usrnm) throws SQLException{
        	         String columnValue = rs.getString(i);
        	         strs[i-1] = columnValue;	 
             	}
-            	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7],
-            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15]));
+            	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7]));
             	
             }
             /*for(Ad temp: adList){
@@ -209,8 +208,7 @@ public boolean searchForUser(String usrnm) throws SQLException{
        	         String columnValue = rs.getString(i);
        	         strs[i-1] = columnValue;	 
             	}
-            	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7],
-            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15]));
+            	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7]));
             	
             }
             /*for(Ad temp: adList){
@@ -245,8 +243,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
        	         String columnValue = rs.getString(i);
        	         strs[i-1] = columnValue;	 
             	}
-            	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7],
-            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15]));
+            	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7]));
             	
             }
             /*for(Ad temp: adList){
@@ -273,7 +270,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
         }
 	}
 	
-	public List<Ad> searchForReservations(String usrnm) throws SQLException{
+	public ResultSet searchForReservations(String usrnm) throws SQLException{
 		
 		if (con != null) {
             java.sql.PreparedStatement statement = null;
@@ -283,39 +280,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
             statement.setString(1, usrnm);
 
             rs = statement.executeQuery();
-            
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
-            String[] strs = new String[columnsNumber];
-           	String ads = "";
-            
-            while(rs.next()){
-            	for (int i = 1; i <= columnsNumber; i++) {
-       	         String columnValue = rs.getString(i);
-       	         strs[i-1] = columnValue;	 
-            	}     
-            	if(ads.equals("")) ads = ads + strs[1];
-            	else ads = ads + "," +strs[1];
-            }
-            statement = null;
-            statement = con.prepareStatement("SELECT * FROM ROOM WHERE ID IN ("+ ads+")");
-
-            rs = statement.executeQuery();
-            rsmd = rs.getMetaData();
-            columnsNumber = rsmd.getColumnCount();
-            strs = new String[columnsNumber];
-            List<Ad> adList = new ArrayList<Ad>();
-            
-            while(rs.next()){
-            	for (int i = 1; i <= columnsNumber; i++) {
-       	         String columnValue = rs.getString(i);
-       	         strs[i-1] = columnValue;	 
-            	}
-            	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7],
-            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15]));
-            	
-            }
-            return adList;
+            return rs;
 		}
 		
 		return null;
@@ -351,35 +316,6 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
 		return null;
 	}
 	
-	public Ad findRoom(String id) throws SQLException{
-		if (con != null) {
-	        PreparedStatement statement = null;
-
-	        statement = con.prepareStatement("SELECT * FROM ROOM WHERE ID=?");
-	        statement.setString(1, id);
-	        ResultSet rs = statement.executeQuery();
-	        
-	        ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
-            String[] strs = new String[columnsNumber];
-            Ad ad = null;
-            
-            while(rs.next()){
-            	for (int i = 1; i <= columnsNumber; i++) {
-       	         String columnValue = rs.getString(i);
-       	         strs[i-1] = columnValue;	 
-            	}
-
-            	ad = new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7],
-            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15]);
-            	
-            }
-            return ad;
-            
-		}
-		return null;
-	}
-	
 	public void updateUserInfo(String usrnm, String psswd, String phone, String email,String pic) throws SQLException{
 		
 		if(psswd.equals("")) psswd = null;
@@ -411,6 +347,22 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
         System.out.println("SENDING TO:"+to);
         
         insertMessageToDB(from,content,to);
+	}
+	
+	public void insertRating(String user,String roomid,String rating) throws SQLException{
+		  if (con != null) {
+	        	
+	          PreparedStatement statement = null;
+	            statement = con.prepareStatement("insert into RATING (USER,ROOM,MARK) values (?, ?, ?);");
+
+	            statement.setString(1, user);
+	            statement.setString(2, roomid);
+	            statement.setString(3, rating);
+
+	            statement.executeUpdate();
+
+
+	        }
 	}
 	
 	public void insertMessageToDB(String from,String content, String to) throws SQLException {
@@ -496,6 +448,26 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
     }
 	
 	
+	
+	public void AdjustSuggestion() throws SQLException{
+		
+		if (con != null) {
+			java.sql.PreparedStatement statement = null;
+            ResultSet rs = null;
+            int count,n;
+            statement= con.prepareStatement("SELECT COUNT(DISTINCT(USER)),COUNT(DISTINCT(ROOM)) FROM RATING;");
+            rs= statement.executeQuery();
+            while (rs.next()) {
+            	count=rs.getInt(1);
+            	n=rs.getInt(2);
+            }
+            
+		}
+		
+		//return null;
+		
+	}
+	
 	public List<User> allUsers() throws SQLException{
 		
 		if (con != null) {
@@ -580,87 +552,8 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
 
 		}
 	}
-	
-	public void addAd(Ad ad, String hostname, List<String> dates) throws SQLException{
-			if (con != null) {
-				java.sql.PreparedStatement statement = null;
-
-				statement = con.prepareStatement("insert into ROOM (ID,NAME,DESCRIPTION,"
-				+"CITY,ADDRESS,COUNTRY,PIC,PRICE,PRICE_PER_PERSON,MAX_PEOPLE,"
-				+ "TYPE,BEDS,WCS,BEDROOMS,LIVING_ROOMS,AREA) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
-
-				statement.setString(1, ad.id);
-				statement.setString(2, ad.name);
-				statement.setString(3, ad.desc);
-				statement.setString(4, ad.city);
-				statement.setString(5, ad.address);
-				statement.setString(6, ad.country);
-				statement.setString(7, ad.pic);
-	        	statement.setString(8, ad.price);
-	        	statement.setFloat(9, ad.ppr);
-	        	statement.setInt(10, ad.maxp);
-	        	statement.setString(11, ad.type);
-	        	statement.setInt(12, ad.beds);
-	        	statement.setInt(13, ad.wcs);
-	        	statement.setInt(14, ad.bedrooms);
-	        	statement.setInt(15, ad.living_rooms);
-	        	statement.setFloat(16, ad.area);
-	        	
-	        	statement.executeUpdate();
-
-	        	statement = con.prepareStatement("insert into AD (HOST_NAME,ID) values (?,?)");
-	        	
-	        	statement.setString(1, hostname);
-	        	statement.setString(2, ad.id);
-
-	        	statement.executeUpdate();
-	        	
-	        	for(String date: dates){
-	        		statement = con.prepareStatement("insert into calendar (listing_id,date,available,price) values (?,?,?,?)");
-		        	
-		        	statement.setString(1, ad.id);
-		        	statement.setString(2, date);
-		        	statement.setString(3, "t");
-		        	statement.setString(4, ad.price);
-
-		        	statement.executeUpdate();
-	        	}
-	        	
-	        	
-			}
-		}
-	
-	public void updateAd(Ad ad) throws SQLException{
-		if (con != null) {
-			java.sql.PreparedStatement statement = null;
-
-			statement = con.prepareStatement("UPDATE ROOM SET NAME=COALESCE(?,NAME),DESCRIPTION=COALESCE(?,DESCRIPTION),"
-			+"CITY=COALESCE(?,CITY),ADDRESS=COALESCE(?,ADDRESS),COUNTRY=COALESCE(?,COUNTRY),PIC=COALESCE(?,PIC),"
-			+ "PRICE=COALESCE(?,PRICE),PRICE_PER_PERSON=COALESCE(?,PRICE_PER_PERSON),MAX_PEOPLE=COALESCE(?,MAX_PEOPLE),"
-			+ "TYPE=COALESCE(?,TYPE),BEDS=COALESCE(?,BEDS),WCS=COALESCE(?,WCS),BEDROOMS=COALESCE(?,BEDROOMS),"
-			+ "LIVING_ROOMS=COALESCE(?,LIVING_ROOMS),AREA=COALESCE(?,AREA) WHERE ID=?;");
-
-			statement.setString(1, ad.name);
-			statement.setString(2, ad.desc);
-			statement.setString(3, ad.city);
-			statement.setString(4, ad.address);
-			statement.setString(5, ad.country);
-			statement.setString(6, ad.pic);
-        	statement.setString(7, ad.price);
-        	statement.setFloat(8, ad.ppr);
-        	statement.setInt(9, ad.maxp);
-        	statement.setString(10, ad.type);
-        	statement.setInt(11, ad.beds);
-        	statement.setInt(12, ad.wcs);
-        	statement.setInt(13, ad.bedrooms);
-        	statement.setInt(14, ad.living_rooms);
-        	statement.setFloat(15, ad.area);
-			statement.setString(16, ad.id);
-        	
-        	statement.executeUpdate();
-		}
-	}
 }
+
 
 
 

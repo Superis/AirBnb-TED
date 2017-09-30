@@ -14,29 +14,23 @@ var currentMarker;
 var geocoder = new google.maps.Geocoder;
 	var infowindow = new google.maps.InfoWindow;
 
-function initMap(address) {
-	var initCenter = {lat: 37.9833333, lng: 23.7333333};
+function initMap() {
+	var haightAshbury = {lat: 37.9833333, lng: 23.7333333};
 
     map = new google.maps.Map(document.getElementById('map'), {
           zoom: 12,
-          center: initCenter,
+          center: haightAshbury,
           mapTypeId: 'terrain'
         });
 
-    //when you have a given address initCenter is the given address
-    if(address != null){
-    	geocodeGivenAddress(geocoder, map, address);
-    }
-    
         // This event listener will call addMarker() when the map is clicked.
     map.addListener('click', function(event) {
         currentMarker.setMap(null);	
         addMarker(event.latLng);
      	});
         // Adds a marker at the center of the map.
-        addMarker(initCenter);
+        addMarker(haightAshbury);
 	
-       //This event listener will find given address
     document.getElementById('submit').addEventListener('click', function() {
     	geocodeAddress(geocoder, map);
         });
@@ -91,17 +85,3 @@ function geocodeAddress(geocoder, resultsMap) {
           }
         });
       }
-
-function geocodeGivenAddress(geocoder, resultsMap, address) {
-    geocoder.geocode({'address': address}, function(results, status) {
-      if (status === 'OK') {
-        resultsMap.setCenter(results[0].geometry.location);
-        	map.setZoom(15);
-    currentMarker.setMap(null);	
-	addMarker(results[0].geometry.location);
-	document.getElementById('pos').value = results[0].geometry.location;
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
