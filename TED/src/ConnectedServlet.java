@@ -72,6 +72,7 @@ public class ConnectedServlet extends HttpServlet {
 			fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
 			if (fileName == null || fileName.isEmpty()) {
 			    // It's not submitted or filled out.
+				System.out.println("nooooooooooo");
 				given=false;
 				try {
 					connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password"),request.getParameter("phone"),request.getParameter("email"),"");
@@ -86,47 +87,49 @@ public class ConnectedServlet extends HttpServlet {
 				//request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
 				request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
 			}
-			InputStream fileContent = filePart.getInputStream();
-		    //String loc=.getServletContext().getRealPath("/WebContent/res/img");
-		    File folder=new File("/home/peris/Pictures/TEDImages");
-		    //File file=new File(folder,fileName);
-		    System.out.println(fileName);
-		    //Files.copy(fileContent, file.toPath());
-		    //}
-		    //System.out.println(fileName.contains("\\s"));
-		    String fileName2="";
-		    int i;
-		    if (fileName.contains(" ")) {
-		    	//System.out.println("fileName");
-		    	String[] temp=fileName.split("\\s+");
-		    	for (i=0;i<temp.length;i++)
-		    		fileName2=fileName2+temp[i]; 	
-		    }
-		    //System.out.println(fileName);
-		    String temp2[]=fileName2.split("(?=\\.)");
-		    File file = File.createTempFile(temp2[0]+"-", temp2[1], folder);
-		    Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		    //}
-		    
-		    
-			
-			try {
-				if(given)
-					connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password")
-						,request.getParameter("phone"),request.getParameter("email"),file.toPath().getFileName().toString());
-				else
-					connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password")
-							,request.getParameter("phone"),request.getParameter("email"),"");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			else{
+				InputStream fileContent = filePart.getInputStream();
+			    //String loc=.getServletContext().getRealPath("/WebContent/res/img");
+			    File folder=new File("/home/peris/Pictures/TEDImages");
+			    //File file=new File(folder,fileName);
+			    System.out.println(fileName);
+			    //Files.copy(fileContent, file.toPath());
+			    //}
+			    //System.out.println(fileName.contains("\\s"));
+			    String fileName2="";
+			    int i;
+			    if (fileName.contains(" ")) {
+			    	//System.out.println("fileName");
+			    	String[] temp=fileName.split("\\s+");
+			    	for (i=0;i<temp.length;i++)
+			    		fileName2=fileName2+temp[i]; 	
+			    }
+			    //System.out.println(fileName);
+			    String temp2[]=fileName2.split("(?=\\.)");
+			    File file = File.createTempFile(temp2[0]+"-", temp2[1], folder);
+			    Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			    //}
+			    
+			    
+				
+				try {
+					if(given)
+						connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password")
+							,request.getParameter("phone"),request.getParameter("email"),file.toPath().getFileName().toString());
+					else
+						connector.updateUserInfo((String)request.getSession(false).getAttribute("user"),request.getParameter("password")
+								,request.getParameter("phone"),request.getParameter("email"),"");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				finally{
+				connector.destroyConnection();
+				}
+				
+				//request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
+				request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
 			}
-			finally{
-			connector.destroyConnection();
-			}
-			
-			//request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
-			request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
 		}
 		else request.getRequestDispatcher("/res/jsp/login_success.jsp").forward(request, response);
 	}
