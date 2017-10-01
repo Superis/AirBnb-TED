@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,23 +30,68 @@
 %>
 
 
-<div class="green">
-	<h3>
- 		<center><%=item.name%></center>
- 	</h3>
-</div>
-<br>
-<h4>
- DESCRIPTION :
-</h4>
-<br>
-<br>
-  <%= item.desc %>
-<br>
-<img src=<%=item.pic%> height="300" width="500">
-<br>
 
-<%
+<br>
+<h1 align="center">ΠΛΗΡΟΦΟΡΙΕΣ ΑΓΓΕΛΙΑΣ</h1>
+
+<br>
+<table>
+ <tr>
+ <td style="vertical-align:top">
+ <table>
+ 	<tr><td style="vertical-align:top">Πρόσβαση</td>
+ 	<td><textarea readonly class="textinput" rows="3" cols="50"><%=item.name%></textarea></td>
+ 	</tr>
+ 	<tr><td style="vertical-align:top">Περιγραφή</td>
+ 	<td><textarea readonly class="textinput" rows="3" cols="50"><%=item.desc %></textarea></td>
+ 	</tr>
+ 	<tr><td style="vertical-align:top">Κανόνες Ενοικίασης</td>
+ 	<td><textarea readonly class="textinput" rows="3" cols="50"></textarea></td>
+ 	</tr>
+ </table>
+ </td>
+ <td> <img src=<%=item.pic%> height="300" width="500"></td>
+ </tr>
+ <tr><td>
+ <table style="width:50%">
+ 	<tr>
+ 	<td style="vertical-align:top">Μέγιστος αριθμός ατόμων
+ 	<input readonly type="text" class="textinput" value="<%=item.maxp%>" ></td>
+ 	<td style="vertical-align:top">Ελάχιστη τιμή
+ 	<input type="text" class="textinput" value="<%=item.price%>"></td>
+ 	<td style="vertical-align:top">Eπιπλέον κόστος ανά άτομο
+ 	<input readonly type="text" class="textinput" value="<%=item.ppr%>"></td>
+ 	</tr>
+ </table>
+ </td></tr>
+ <tr><td>
+ <table style="width:50%">
+ 	<tr>
+ 	<td style="vertical-align:top">Τύπος ενοικιαζόμενου χώρου
+ 	<input readonly type="text" class="textinput" value="<%=item.type%>"></td>
+ 	<td style="vertical-align:top">Αριθμός κρεβατιών
+ 	<input readonly type="text" class="textinput" value="<%=item.beds%>"></td>
+ 	<td style="vertical-align:top">Αριθμός μπάνιων
+ 	<input readonly type="text" class="textinput" value="<%=item.wcs%>"></td>
+ 	</tr>
+ </table>
+ </td>
+ </tr>
+ <tr><td>
+ <table style="width:50%">
+ 	<tr>
+ 	<td style="vertical-align:top">Αριθμός υπνοδωματίων
+ 	<input readonly type="text" class="textinput" value="<%=item.bedrooms%>"></td>
+ 	<td style="vertical-align:top">Αριθμός καθιστικών
+ 	<input readonly type="text" class="textinput" value="<%=item.living_rooms%>"></td>
+ 	<td style="vertical-align:top">Εμβαδό χώρου
+ 	<input readonly type="text" class="textinput" value="<%=item.area%>"></td>
+ 	</tr>
+ </table>
+ </td>
+ </tr>
+ <tr>
+  <%
 
 String user = "none";
 if(request.getSession(false) != null)
@@ -61,14 +108,24 @@ if(request.getSession(false) != null)
 	}
 	else {
 		System.out.print("not that");
+		String initContent = "For "+item.city+","+item.address+", id:"+item.id+" : ";
 %>
-	<input type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
-	<div id="toChangeAd"></div>
-	<textarea class="textinput" id="content" rows="3" cols="50"></textarea>
-	<input type="submit" name="send_message" class="buttonNW" value="Send message to host" onclick="send_message('<%=user%>','<%=item.id%>')">
-<%	}
+ <tr><td><h1> ΕΠΙΚΟΙΝΩΝΙΑ</h1></td></tr>
+ <td><textarea class="textinput" id="content" rows="3" cols="75"><%=initContent %></textarea></td>
+ <tr> <td><input type="submit" name="send_message" class="buttonNW" value="Send message to host" onclick="send_message('<%=user%>','<%=item.id%>','<%=initContent%>')">
+ <input type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
+ </td>	</tr>
+ <%	}
   }
 }%>
+ </tr>
+
+ 
+
+</table>
+
+
+
 
 
 <br>

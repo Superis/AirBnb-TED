@@ -12,16 +12,18 @@
 <%@ page import="java.util.*" %>
  <% 
  List<Ad> reservations = (List<Ad>)request.getAttribute("reservations");
+ List<String> dates = (List<String>)request.getAttribute("dates");
  %>
- <ul>
+ <ul style="list-style:none;">
  <%
+ 	int i = 0;
 	for(Ad ad: reservations){
 		%>
 		<li style="border: groove;">
-		<input type="submit" value="Διαγραφή">
-		<%=ad.id%>,<%=ad.name%>,<%=ad.city %>,<%=ad.address %>,<%=ad.country %>, <%=ad.price %>
+		<%=ad.id%>,<%=ad.name%>,<%=ad.city %>,<%=ad.address %>,<%=ad.country %>, <%=ad.price %>,<%=dates.get(i) %>,<%=dates.get(i+1)%>
 		</li>
 		<%
+		i += 2;
 	}
  %>
 </ul>

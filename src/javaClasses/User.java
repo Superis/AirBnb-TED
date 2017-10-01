@@ -18,6 +18,20 @@ public class User {
 		this.image = image;
 	}
 	
+	public User(User newuser) {
+		this.username = newuser.username;
+		this.password = newuser.password;
+		this.email = newuser.email;
+		this.phone = newuser.phone;
+		this.role = newuser.role;
+		this.image = newuser.image;
+	}
+
+
+	public String getUsername(){
+		return username;
+	}
+	
 	public void getAll(String[] strs){
 		strs[0] = username;
 		strs[1] = password;

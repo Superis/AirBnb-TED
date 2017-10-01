@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -159,8 +160,10 @@ public class DbServlet extends HttpServlet {
 		 }
 		 else  if(request.getParameter("show_reservations") != null){
 			 try {
-				List<Ad> adList = Connector.searchForReservations((String)request.getSession(false).getAttribute("user"));
+				 List<String> datesList = new ArrayList<String>();
+				List<Ad> adList = Connector.searchForReservations((String)request.getSession(false).getAttribute("user"),datesList);
 				request.setAttribute("reservations", adList);
+				request.setAttribute("dates", datesList);
 				 request.getRequestDispatcher("/res/jsp/show_reservations.jsp").forward(request, response);
 			 } catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -183,7 +186,7 @@ public class DbServlet extends HttpServlet {
 						"","","","","","","","");
 			 request.setAttribute("ad", ad);
 			 //String dates = request.getParameter("dates");
-			 request.getRequestDispatcher("/res/jsp/make_ad.jsp?func=update").forward(request, response);
+			 request.getRequestDispatcher("/res/jsp/make_ad.jsp").forward(request, response);
 		 }
 		 else {
 			 String myinfo = request.getParameter("count");

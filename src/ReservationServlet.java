@@ -34,17 +34,17 @@ public class ReservationServlet extends HttpServlet {
 		mysqlConnector mysql = new mysqlConnector();
 		mysql.establishConnection();
 		try {
-			mysql.makeReservation(request.getParameter("user"),request.getParameter("id"));
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		HttpSession session = request.getSession();
-		try {
+			HttpSession session = request.getSession();
+
 			mysql.holdRoom(request.getParameter("id"),(String)session.getAttribute("from"),(String)session.getAttribute("to"));
+			mysql.makeReservation(request.getParameter("user"),request.getParameter("id"),(String)session.getAttribute("from")
+					,(String)session.getAttribute("to"));
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		finally{
 		mysql.destroyConnection();
+		}
 	}
 
 	/**

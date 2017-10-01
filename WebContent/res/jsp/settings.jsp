@@ -7,10 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<label> My Profile</label>
-<br>
-<br>
-<br>
+<h1 align="center"> My Profile</h1>
 
 <%@ page import="javaClasses.*" %>
 <%@ page import="java.sql.*" %>

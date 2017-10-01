@@ -5,7 +5,7 @@ public class Listing {
 	   public static final String GENDER_FEMALE = "F";
 	    
 	   private String name;
-	   private int id;
+	   private String id;
 	   private String description;
 	   private String city;
 	   private String state;
@@ -13,9 +13,18 @@ public class Listing {
 	   private String pic;
 	   private String price;
 	   
-	   public Listing() {
-	        
-	   }
+	   public Listing(String name,String id,String desc,String city,String state,String country,String pic,String price) {
+		this.name=name;
+		this.id=id;
+		this.description=desc;
+		this.city=city;
+		this.state=state;
+		this.country=country;
+		this.pic=pic;
+		this.price=price;
+
+	}
+	   
 	   public String getName() {
 		   return name;
 	   }
@@ -29,11 +38,11 @@ public class Listing {
 	       this.city = city;
 	   }
 	 
-	   public int getId() {
+	   public String getId() {
 	       return id;
 	   }
 	 
-	   public void setId(int id) {
+	   public void setId(String id) {
 	       this.id = id;
 	   }
 	 

@@ -32,8 +32,8 @@ String func = request.getParameter("func");
  	<% }%>
  </table>
  </td>
- <td><input class="buttonNW" id="submit" type="button" value="Ψάξε διεύθυνση">
- <input class="textinput" type="text" id="pos" value="none" name="position"></input>
+ <td><textarea class="textinput" id="pos" value="none" name="position" rows="1" cols="38"></textarea>
+ <input class="buttonNW" id="submit" type="button" value="Ψάξε διεύθυνση">
  <div  id = "map" style = "width:350px; height:300px;"></div></td>
  </tr>
  <tr><td>

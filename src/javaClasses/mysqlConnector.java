@@ -257,15 +257,17 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
 		return null;
 	}
 	
-	public void makeReservation(String usrnm, String id) throws SQLException{
+	public void makeReservation(String usrnm, String id, String from, String to) throws SQLException{
 		
 		if (con != null) {
             java.sql.PreparedStatement statement = null;
 
-            statement = con.prepareStatement("insert into RESERVATION (USER_NAME,AD_ID) values (?, ?);");
+            statement = con.prepareStatement("insert into RESERVATION (USER_NAME,AD_ID,FROM_DATE,TO_DATE) values (?,?,?,?);");
 
             statement.setString(1, usrnm);
             statement.setString(2, id);
+            statement.setString(3, from);
+            statement.setString(4, to);
 
             statement.executeUpdate();
 
@@ -273,7 +275,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
         }
 	}
 	
-	public List<Ad> searchForReservations(String usrnm) throws SQLException{
+	public List<Ad> searchForReservations(String usrnm, List<String> datesList) throws SQLException{
 		
 		if (con != null) {
             java.sql.PreparedStatement statement = null;
@@ -296,6 +298,8 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
             	}     
             	if(ads.equals("")) ads = ads + strs[1];
             	else ads = ads + "," +strs[1];
+            	datesList.add(strs[2]);
+            	datesList.add(strs[3]);
             }
             statement = null;
             statement = con.prepareStatement("SELECT * FROM ROOM WHERE ID IN ("+ ads+")");
@@ -660,6 +664,39 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
         	statement.executeUpdate();
 		}
 	}
+	
+	public List<Listing> allRooms() throws SQLException{
+		
+		 	if (con != null) {
+		         java.sql.PreparedStatement statement = null;
+		         ResultSet rs = null;
+		 
+		         statement = con.prepareStatement("SELECT * FROM ROOM;");
+		         rs = statement.executeQuery();
+		         
+		         ResultSetMetaData rsmd = rs.getMetaData();
+		 		int columnsNumber = rsmd.getColumnCount();
+		 		String[] strs = new String[columnsNumber];
+		 		List<Listing> roomList = new ArrayList<Listing>(); 
+		 		List<String> mylist;
+		 		while(rs.next()){
+		 			for (int i = 1; i <= columnsNumber; i++) {
+		 				String columnValue = rs.getString(i);
+		 				strs[i-1] = columnValue;	
+		 				//mylist.add(columnValue);
+		 			}
+		 			roomList.add(new Listing(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7]));
+		 		}
+		     
+		         
+		         return roomList;
+		 
+		 
+		     }
+		 	
+		 	return null;
+		 }
+
 }
 
 

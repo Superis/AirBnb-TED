@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@page import="java.text.NumberFormat"%>
 
-
+<meta charset="UTF-8">
 <table class="search_table">
 	<tr>
   	 <td><input type="text" class="search" id="place" placeholder="Search..."></td>

@@ -57,10 +57,18 @@ Hello Admin!
 %>
   </ul>
 </div>
+<script>
+function myFunction() {
+    alert("XML files created in corresponding path");
+}
+</script>
 
 <form action="${pageContext.request.contextPath}/LogoutServlet" method="post">
    <input type="submit" class="button" value="Logout" >
 	</form>
+	<form action="${pageContext.request.contextPath}/XMLServlet" method="post">
+<button  class="button2 submitb" type="submit" onclick="myFunction()" >Generate XML files</button>
+</form>
 <script src="${pageContext.request.contextPath}/res/js/js_test.js" type="text/javascript"> </script>
 
 </body>

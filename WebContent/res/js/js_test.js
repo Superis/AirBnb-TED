@@ -267,6 +267,7 @@ function make_reservation(user,id){
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("toChangeAd").innerHTML = this.responseText;
 			alert("Resrvation has been comfirmed");
+			closeModal();
 		}
 	};
 	xhttp.open("GET", "/TED/ReservationServlet?user="+user+"&id="+id, true);
@@ -321,13 +322,16 @@ function ad_alert(){
 	alert("Ad has been registered successfully!");
 }
 	
-function send_message(fromuser,id){
+function send_message(fromuser,id,initcontent){
 	var xhttp;    
 	
 	content = document.getElementById("content").value;
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
+			alert("Your message has been sent!");
+			alert(initcontent);
+			document.getElementById("content").value = initcontent;
 		}
 	};
 	xhttp.open("GET", "/TED/DbServlet?send_message=send&from="+fromuser+"&id="+id+"&content="+content, true);
