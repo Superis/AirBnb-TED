@@ -360,3 +360,24 @@ element over the whole parent element
     color: white;
 }
 
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+
+.ratinga {
+  text-align: center;
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.ratinga > span {
+  display: inline-block;
+  position: relative;
+  width: 1.5em;
+}
+.ratinga > span:hover:before,
+.ratinga> span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+}
+

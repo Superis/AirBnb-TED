@@ -84,7 +84,9 @@
 	<br>
 	<img src=<%=temp.pic	%> height="100" width="100">
 	<%=temp.id%>,<%=temp.name%>,<%=temp.city %>,<%=temp.address %>,<%=temp.country %>, <%=temp.price %>,<%=j %>
-	<!-- <input type="button" class="button" onclick="clicked()" value="More info"></input>-->
+	<div class="rating">
+	<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span style="color: red;">☆</span>
+	</div>
  </div>
 </div> 
 
