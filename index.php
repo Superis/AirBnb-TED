@@ -1,1 +1,1 @@
-<?php header( 'Location: /res/jsp/welcome.jsp' ) ;  ?>
+<?php header( 'Location: WebContent/res/jsp/welcome.jsp' ) ;  ?>
