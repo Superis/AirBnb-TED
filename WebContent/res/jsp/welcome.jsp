@@ -81,7 +81,7 @@ else if(user != null) response.sendRedirect("/TED/ConnectedServlet");
   	 <td><input type="text" class="search" id="place" placeholder="Place..."></td>
  	 <td><input type="text" class="search" id="from" onclick="$('#from').datepicker();$('#from').datepicker('show');" placeholder="Stay from(date).."></td>
  	 <td><input type="text" class="search" id="to" onclick="$('#to').datepicker();$('#to').datepicker('show');" placeholder="To(date).."></td>
- 	 <td><input type="text" class="search"  placeholder="Number of people..."></td>  
+ 	 <td><input type="text" class="search" id="max" placeholder="Number of people..."></td>  
   	 <td><input type="submit" class="button" value="Search" onclick="show_boxes(0)"></td>
   	 </tr>
 	</table>

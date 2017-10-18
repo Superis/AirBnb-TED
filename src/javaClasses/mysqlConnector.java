@@ -7,9 +7,9 @@ import java.util.List;
 public class mysqlConnector {
 
 	
-	String URL = "jdbc:mysql://localhost:3306/TED?autoReconnect=true&useSSL=true";
+	String URL = "jdbc:mysql://localhost:3306/newdb?autoReconnect=true&useSSL=true";
     String USERNAME = "root";
-    String PASSWORD = "1234";
+    String PASSWORD = "6666";
     Connection con = null;
 	
     public void establishConnection(){
@@ -160,7 +160,8 @@ public boolean searchForUser(String usrnm) throws SQLException{
        	         strs[i-1] = columnValue;	 
             	}
             	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7],
-            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15]));
+            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15],strs[16],strs[17]));
+            	
             	
             }
             /*for(Ad temp: adList){
@@ -210,7 +211,7 @@ public boolean searchForUser(String usrnm) throws SQLException{
        	         strs[i-1] = columnValue;	 
             	}
             	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7],
-            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15]));
+            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15],strs[16],strs[17]));
             	
             }
             /*for(Ad temp: adList){
@@ -222,17 +223,18 @@ public boolean searchForUser(String usrnm) throws SQLException{
 		return null;
 	}
 	
-public List<Ad> searchForAds(String res,String from,String to,String diff) throws SQLException{
+public List<Ad> searchForAds(String res,String from,String to,String diff,String max) throws SQLException{
 		
 		if (con != null) {
             java.sql.PreparedStatement statement = null;
             ResultSet rs = null;
 
-            statement = con.prepareStatement("SELECT * FROM ROOM INNER JOIN(SELECT distinct(listing_id) FROM calendar WHERE available='t' AND date>=? AND date<? GROUP BY listing_id HAVING count(date)=?) WW ON ID=WW.listing_id AND CITY=? ORDER BY length(PRICE),PRICE");
+            statement = con.prepareStatement("SELECT * FROM ROOM INNER JOIN(SELECT distinct(listing_id) FROM calendar WHERE available='t' AND date>=? AND date<? GROUP BY listing_id HAVING count(date)=?) WW ON ID=WW.listing_id AND CITY=? AND MAX_PEOPLE>=? ORDER BY length(PRICE),PRICE");
             statement.setString(4, res);
             statement.setString(1, from);
             statement.setString(2, to);
             statement.setString(3, diff);
+            statement.setString(5,max);
             statement.setFetchSize(150);
             rs = statement.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -246,7 +248,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
        	         strs[i-1] = columnValue;	 
             	}
             	adList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7],
-            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15]));
+            			strs[8],strs[9],strs[10],strs[11],strs[12],strs[13],strs[14],strs[15],strs[16],strs[17]));
             	
             }
             /*for(Ad temp: adList){
@@ -665,7 +667,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
 		}
 	}
 	
-	public List<Listing> allRooms() throws SQLException{
+	public List<Ad> allRooms() throws SQLException{
 		
 		 	if (con != null) {
 		         java.sql.PreparedStatement statement = null;
@@ -677,7 +679,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
 		         ResultSetMetaData rsmd = rs.getMetaData();
 		 		int columnsNumber = rsmd.getColumnCount();
 		 		String[] strs = new String[columnsNumber];
-		 		List<Listing> roomList = new ArrayList<Listing>(); 
+		 		List<Ad> roomList = new ArrayList<Ad>(); 
 		 		List<String> mylist;
 		 		while(rs.next()){
 		 			for (int i = 1; i <= columnsNumber; i++) {
@@ -685,7 +687,7 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
 		 				strs[i-1] = columnValue;	
 		 				//mylist.add(columnValue);
 		 			}
-		 			roomList.add(new Listing(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7]));
+		 			roomList.add(new Ad(strs[0],strs[1],strs[2],strs[3],strs[4],strs[5],strs[6],strs[7]));
 		 		}
 		     
 		         
@@ -696,6 +698,78 @@ public List<Ad> searchForAds(String res,String from,String to,String diff) throw
 		 	
 		 	return null;
 		 }
+	
+	public void insertRating(String user,String roomid,String rating) throws SQLException{
+		  if (con != null) {
+	        	
+	          PreparedStatement statement = null;
+	            statement = con.prepareStatement("insert into RATING (USER,ROOM,MARK) values (?, ?, ?);");
+
+	            statement.setString(1, user);
+	            statement.setString(2, roomid);
+	            statement.setString(3, rating);
+
+	            statement.executeUpdate();
+	            
+	            statement = con.prepareStatement("UPDATE ROOM SET REVIEWNUM=REVIEWNUM+1,TOTALMARK=TOTALMARK+? WHERE ID=?");
+	            statement.setString(1,rating);
+	            statement.setString(2, roomid);
+	            statement.executeUpdate();
+
+
+	        }
+	}
+
+
+public int[][] AdjustSuggestion() throws SQLException{
+		
+		if (con != null) {
+			java.sql.PreparedStatement statement = null;
+          ResultSet rs = null;
+          int count=0;
+          int n=0;
+          statement= con.prepareStatement("SELECT COUNT(USER_NAME) FROM USER_ACCOUNT");
+          rs= statement.executeQuery();
+          while (rs.next()) {
+          	count=rs.getInt(1);
+          }
+          statement=con.prepareStatement("SELECT COUNT(ID) FROM ROOM");
+          rs= statement.executeQuery();
+          while (rs.next()) {
+          	n=rs.getInt(1);
+          }
+          List<User> usrList=this.allUsers();
+          List<Ad> roomList=this.allRooms();
+          int[][] vectors = new int[count][];
+          for (int i = 0; i < count; i++) {
+          	//System.out.println("[");
+              vectors[i] = new int[n];
+              User user=usrList.get(i);
+              for (int j=0;j<n;j++) {
+	                Ad temp=roomList.get(j);
+	                statement=con.prepareStatement("SELECT MARK FROM RATING WHERE USER=? AND ROOM=?");
+	                statement.setString(1, user.getName());
+	                statement.setString(2, temp.getName());
+	                rs= statement.executeQuery();
+	                if (!rs.next()) {
+	                	vectors[i][j]=0;
+	                }
+	                else
+	                	vectors[i][j]=rs.getInt(1);
+	                //System.out.print(vectors[i][j]);
+              }
+              //System.out.print("]");
+          }
+          System.out.println("FINISHED");
+          return vectors;
+          
+          
+		}
+		
+		return null;
+		
+	}
+
 
 }
 

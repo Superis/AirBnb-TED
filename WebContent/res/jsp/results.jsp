@@ -8,7 +8,7 @@
   	 <td><input type="text" class="search" id="place" placeholder="Search..."></td>
  	 <td><input type="text" class="search" id="from" onclick="$('#from').datepicker();$('#from').datepicker('show');" placeholder="Stay from(date).."></td>
  	 <td><input type="text" class="search" id="to" onclick="$('#to').datepicker();$('#to').datepicker('show');" placeholder="To(date).."></td>
- 	 <td><input type="text" class="search"  placeholder="Number of people..."></td>  
+ 	 <td><input type="text" class="search" id="max" laceholder="Number of people..."></td>  
   	 <td><input type="submit" class="button" value="Search" onclick="show_boxes(0)"></td>
   	 </tr>
 	</table>
@@ -78,14 +78,22 @@
 	 sb.deleteCharAt(0);
 	 String myres=sb.toString();
 	 float num = Float.parseFloat(myres);*/
+	 int myval=0;
+	 if (temp.totalrev!=0)
+		 myval=(int)(temp.totalrev/temp.reviewnum);
  %>
 <div onclick="openModal('<%=temp.id%>')" class="box">
  <div class="Content">
 	<br>
 	<img src=<%=temp.pic	%> height="100" width="100">
-	<%=temp.id%>,<%=temp.name%>,<%=temp.city %>,<%=temp.address %>,<%=temp.country %>, <%=temp.price %>,<%=j %>
+	<%=temp.id%>,<%=temp.name%>,<%=temp.city %>,<%=temp.address %>,<%=temp.country %>, <%=temp.price %> ,   <%=temp.reviewnum %> Ratings, <%= (float)temp.totalrev/(float)temp.reviewnum %> / 5
 	<div class="rating">
-	<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span style="color: red;">☆</span>
+	<% for(int i=0;i<(5-myval);i++){ %>
+	<span>☆</span>
+	<%} 
+	for(int i=0;i<myval;i++){%>
+	<span  style="color: red;">☆</span>
+	<%} %>
 	</div>
  </div>
 </div> 
@@ -102,7 +110,7 @@
     <%for(int i=0;i<((total/10)+1);i++) {
     %>
     
-    <a onclick="openNewTen('<%=10*i%>','<%= request.getParameter("str") %>','<%= request.getParameter("from")%>','<%= request.getParameter("to")%>','<%=request.getParameter("diff")%>')" > <%=(i+1)%> </a> 
+    <a onclick="openNewTen('<%=10*i%>','<%= request.getParameter("str") %>','<%= request.getParameter("from")%>','<%= request.getParameter("to")%>','<%=request.getParameter("diff")%>','<%=request.getParameter("max")%>')" > <%=(i+1)%> </a> 
     <%} %>
     <a href="#velakia" >&raquo;</a>
   </div>

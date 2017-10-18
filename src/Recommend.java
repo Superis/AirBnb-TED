@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +32,7 @@ public class Recommend extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int count = 100;
+		/*int count = 100;
         
         // R^n
         int n = 3;
@@ -65,6 +66,27 @@ public class Recommend extends HttpServlet {
 	    } catch (Exception ex) {
 	        Logger.getLogger(Recommend.class.getName()).log(Level.SEVERE, null, ex);
 	    }
+	    */
+		System.out.println("HI");
+		mysqlConnector mysql=new mysqlConnector();
+		mysql.establishConnection();
+		int[][] myvecs=null;
+		try {
+			myvecs=mysql.AdjustSuggestion();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		int size=myvecs.length;
+		int n=myvecs[0].length;
+		int stages=2;
+		int buckets=10;
+		//System.out.print(size);
+		LSHSuperBit lsh = new LSHSuperBit(stages, buckets, n);
+		for (int i = 0; i < size; i++) {
+            int[] hash = lsh.hash(myvecs[i]);
+            System.out.print(hash[0]);
+            System.out.print("\n");
+        }
 			
 		
 	}

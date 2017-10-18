@@ -75,7 +75,7 @@ public class XMLServlet extends HttpServlet {
 			List<User> myusers=null;
 			List<Ad> myads=new ArrayList<Ad>();
 			List<Ad> tempads=new ArrayList<Ad>();
-			List<Listing> listings=null;
+			List<Ad> listings=null;
 			try {
 				myusers = Connector.allUsers();
 			} catch (SQLException e1) {
@@ -139,7 +139,7 @@ public class XMLServlet extends HttpServlet {
 		
 		  }
 		 if(listings!=null) {
-			 for (Listing ltemp:listings) {
+			 for (Ad ltemp:listings) {
 				 try{            
 					  String listingxml = xstream.toXML(ltemp);
 				      byte[] bytes = listingxml.getBytes("UTF-8");

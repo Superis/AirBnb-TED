@@ -79,14 +79,14 @@ else{%>
   	 <td><input type="text" class="search" id="place" placeholder="Place..."></td>
  	 <td><input type="text" class="search" id="from" onclick="$('#from').datepicker();$('#from').datepicker('show');" placeholder="Stay from(date).."></td>
  	 <td><input type="text" class="search" id="to" onclick="$('#to').datepicker();$('#to').datepicker('show');" placeholder="To(date).."></td>
- 	 <td><input type="text" class="search"  placeholder="Number of people..."></td>  
+ 	 <td><input type="text" class="search" id="max" placeholder="Number of people..."></td>  
   	 <td><input type="submit" class="button" value="Search" onclick="show_boxes(0)"></td>
   	 </tr>
 	</table>
 		<br>
 	<br>
 	<div class="center"><img src="${pageContext.request.contextPath}/res/img/logo.png" height="200" width="600"></div>
-	
+	<a href="${pageContext.request.contextPath}/Recommend" > SEE RECOMENDATIONS </a>
 </div>
 
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDp-buvGy-gXQey238T7oF5NOzw4I6Z6jY"></script>

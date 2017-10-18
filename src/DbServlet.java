@@ -194,10 +194,16 @@ public class DbServlet extends HttpServlet {
 			 String from=request.getParameter("from");
 			 String to=request.getParameter("to");
 			 String diff=request.getParameter("diff");
+			 String max=request.getParameter("max");
 			 System.out.print(cityname);
 			 System.out.print(from);
 			 System.out.print(to);
 			 System.out.println(diff);
+			 System.out.println(max);
+			 if((max!=null) && (max.equals(""))) {
+				 max = "0";
+			 }
+			 System.out.println(max);
 			 /*if (from.equals("null") || to.equals("null")) {
 				 from=null;
 				 to=null;
@@ -207,7 +213,7 @@ public class DbServlet extends HttpServlet {
 			 try {
 				 System.out.print(from!=null && !from.isEmpty() && to!=null && !to.isEmpty());
 				 if (from!=null && !from.isEmpty() && to!=null && !to.isEmpty()) {
-					 rs = Connector.searchForAds(cityname,from,to,diff);
+					 rs = Connector.searchForAds(cityname,from,to,diff,max);
 				 }
 				 else {
 					 rs = Connector.searchForAds("CITY",cityname);	
@@ -220,6 +226,7 @@ public class DbServlet extends HttpServlet {
 			request.setAttribute("from", from);
 			request.setAttribute("to",to);
 			request.setAttribute("diff",diff);
+			request.setAttribute("max", max);
 			HttpSession session = request.getSession();
 			if (session.getAttribute("from")!=null && session.getAttribute("to")!=null) {
 				session.removeAttribute("from");

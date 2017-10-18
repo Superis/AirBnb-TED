@@ -40,4 +40,7 @@ public class User {
 		strs[4] = role;
 		strs[5] = image;
 	}
+	public String getName() {
+		return username;
+	}
 }

@@ -23,7 +23,13 @@ function closeModal() {
 	}
 
 $('#about').click(function(){
-alert("I'm trying to do TED!!");
+alert("Κολοβος Παρης-Παναγιωτης:sdi1300070"+
+"\nMπαρμπακος Περικλης:	sdi1300111"+
+"\nΣμυρης Ελευθεριος:	sdi1300163"+
+
+"\n\nΗ εργασια εχει υλοποιηθει σε eclipse(περιβαλλον unix) με βαση το μοντελο jsp/servlets σε γλωσσα java, με χρηση javascript και συνδεση σε βαση της mysql  μεσω jdbc driver στον tomcat. Eχουν υλοποιηθει τα πρωτα 8 ερωτηματα και μερος του 9ου."+ 
+"Για τη σωστη εκκινηση και"+ "τρεξιμο¨ της εργασιας ειναι αναγκαια η χρηση του μηχανηματος μας,καθως οι "+
+"συνδεσεις στη βαση αλλα και τα αποθηκευμενα αρχεια που χρησιμοποιουμε βρισκονται σε τοπικους φακελους.");
 });
 
 function show_error(){
@@ -60,6 +66,9 @@ function show_boxes(count) {
 	var place = document.getElementById("place");
 	var start=document.getElementById("from");
 	var finish=document.getElementById("to");
+	var max= document.getElementById("max");
+	alert("MAX : "+max.value);
+	alert("rest : "+start.value);
 	var xhttp;    
 	var diff=daydiff(parseDate(start.value), parseDate(finish.value));
 	xhttp = new XMLHttpRequest();
@@ -75,10 +84,10 @@ function show_boxes(count) {
 		var from=mdy[2].concat("-",mdy[0],"-",mdy[1]);
 		var mdy2=finish.value.split('/');
 		var to=mdy2[2].concat("-",mdy2[0],"-",mdy2[1]);
-		xhttp.open("GET", "/TED/DbServlet?str="+place.value+"&count="+count+"&from="+from+"&to="+to+"&diff="+diff, true);
+		xhttp.open("GET", "/TED/DbServlet?str="+place.value+"&count="+count+"&from="+from+"&to="+to+"&diff="+diff+"&max="+max.value, true);
 	}
 	else{
-		xhttp.open("GET", "/TED/DbServlet?str="+place.value+"&count="+count+"&from="+start.value+"&to="+finish.value+"&diff="+diff, true);
+		xhttp.open("GET", "/TED/DbServlet?str="+place.value+"&count="+count+"&from="+start.value+"&to="+finish.value+"&diff="+diff+"&max="+max.value, true);
 	}
 	xhttp.send();
 	
@@ -102,11 +111,11 @@ function show_ads(count){
     }
 }
 
-function openNewTen(count,str,from,to,diff) {
+function openNewTen(count,str,from,to,diff,max) {
 	//alert("I'm trying to do TED!!");
 	//var per=document.getElementById("newten");
 	var xhttp;    
-	
+	//alert("MAX : "+max);
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -114,7 +123,7 @@ function openNewTen(count,str,from,to,diff) {
 		}
 	};
 	//xhttp.open("GET", "/TED/res/jsp/results.jsp?count="+count+"&str="+str, true);
-	xhttp.open("GET", "/TED/DbServlet?count="+count+"&str="+str+"&from="+from+"&to="+to+"&diff="+diff, true);
+	xhttp.open("GET", "/TED/DbServlet?count="+count+"&str="+str+"&from="+from+"&to="+to+"&diff="+diff+"&max="+max, true);
 	xhttp.send();
 	
 }
@@ -265,7 +274,7 @@ function make_reservation(user,id){
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("toChangeAd").innerHTML = this.responseText;
+			//document.getElementById("toChangeAd").innerHTML = this.responseText;
 			alert("Resrvation has been comfirmed");
 			closeModal();
 		}
@@ -398,6 +407,21 @@ function delete_message(content,from,rid,mid){
 	xhttp.send();
 	
 	
+}
+
+function make_review(user,id,score){
+    var xhttp;    
+
+    //var score = document.querySelector('input[name="rating"]:checked').value;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                    //document.getElementById("toChangeAd").innerHTML = this.responseText;
+                    alert("Review has been submitted : " +score);
+            }
+    };
+    xhttp.open("GET", "/TED/ReviewServlet?user="+user+"&id="+id+"&review="+score, true);
+    xhttp.send();
 }
 
 function make_ad(){

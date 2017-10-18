@@ -139,7 +139,7 @@ public class ConnectedServlet extends HttpServlet {
 		}
 		else if(request.getParameter("submitAd") != null){
 			
-			 String fileName ="none";
+			 String fileName ="";
 			 
 			 Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
 			    boolean given=true;
@@ -197,7 +197,8 @@ public class ConnectedServlet extends HttpServlet {
 				 Random rnd = new Random();
 				 int n = 100000 + rnd.nextInt(900000);
 				 String id = Integer.toString(n); 
-				 Ad room = new Ad(id,request.getParameter("access"),request.getParameter("description"),city,address,country,"/files/"+fileName,request.getParameter("minprice"),request.getParameter("adcost"),request.getParameter("maxpeople")
+				 if(!fileName.equals("")) fileName = "/files/"+fileName;
+				 Ad room = new Ad(id,request.getParameter("access"),request.getParameter("description"),city,address,country,fileName,request.getParameter("minprice"),request.getParameter("adcost"),request.getParameter("maxpeople")
 						 ,request.getParameter("type"),request.getParameter("beds"),request.getParameter("wcs"),request.getParameter("bedrooms"),request.getParameter("living_rooms"),request.getParameter("area"));
 				 
 				 try {

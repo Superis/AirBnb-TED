@@ -110,11 +110,16 @@ if(request.getSession(false) != null)
 		System.out.print("not that");
 		String initContent = "For "+item.city+","+item.address+", id:"+item.id+" : ";
 %>
- <tr><td><h1> ΕΠΙΚΟΙΝΩΝΙΑ</h1></td></tr>
+ <tr><td><h1> ΕΠΙΚΟΙΝΩΝΙΑ</h1></td>
+ </tr>
  <tr>
  <td><textarea class="textinput" id="content" rows="3" cols="75"><%=initContent %></textarea></td>
- <td><div class="ratinga">
-	<span style="font-size: 250%;" onclick="clicked()">☆</span><span style="font-size: 250%;">☆</span><span style="font-size: 250%;">☆</span><span style="font-size: 250%;">☆</span><span style="font-size: 250%;">☆</span>
+ <td>ΒΑΘΜΟΛΟΓΙΑ : <div class="ratinga">
+	<span style="font-size: 250%;" onclick="make_review('<%=user%>','<%=item.id%>','5')">☆</span>
+	<span style="font-size: 250%;" onclick="make_review('<%=user%>','<%=item.id%>','4')">☆</span>
+	<span style="font-size: 250%;" onclick="make_review('<%=user%>','<%=item.id%>','3')">☆</span>
+	<span style="font-size: 250%;" onclick="make_review('<%=user%>','<%=item.id%>','2')">☆</span>
+	<span style="font-size: 250%;" onclick="make_review('<%=user%>','<%=item.id%>','1')">☆</span>
 	</div></td>
  <tr> <td><input type="submit" name="send_message" class="buttonNW" value="Send message to host" onclick="send_message('<%=user%>','<%=item.id%>','<%=initContent%>')">
  <input type="submit" value="Make Reservation" class="buttonNW" id="mkbtn" onclick="make_reservation('<%=user%>','<%=item.id%>')">
